@@ -5,6 +5,8 @@ import pandas as pd
 
 
 class Solution:
+    """Base class for any competition solution."""
+
     def __init__(self, config: Optional[dict] = None):
         raise NotImplementedError(f"Abstract class {type(self).__name__} is used")
 
@@ -17,7 +19,7 @@ class Solution:
     def save(self, directory: str | Path):
         """Stores model to the directory.
 
-        The directory must be empty
+        The directory must be empty.
         """
         raise NotImplementedError(f"Abstract class {type(self).__name__} is used")
 

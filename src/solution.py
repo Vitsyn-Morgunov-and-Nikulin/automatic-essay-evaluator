@@ -8,7 +8,7 @@ class Solution:
     """Base class for any competition solution."""
 
     def __init__(self, config: Optional[dict] = None):
-        raise NotImplementedError(f"Abstract class {type(self).__name__} is used")
+        pass
 
     def fit(self, X: pd.DataFrame, y: pd.DataFrame):
         raise NotImplementedError(f"Abstract class {type(self).__name__} is used")

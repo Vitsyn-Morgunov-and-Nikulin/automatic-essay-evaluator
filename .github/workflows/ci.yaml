@@ -1,6 +1,6 @@
 name: continuous-integraion
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   continuous-integration:

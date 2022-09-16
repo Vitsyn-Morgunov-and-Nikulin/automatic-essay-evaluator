@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import pandas as pd
 from dotenv import load_dotenv
@@ -38,10 +38,10 @@ class ConstantPredictorSolution(Solution):
 
         return pd.DataFrame(submission_df)
 
-    def save(self, directory: str | Path):
+    def save(self, directory: Union[str, Path]):
         pass
 
-    def load(self, directory: str | Path):
+    def load(self, directory: Union[str, Path]):
         pass
 
 

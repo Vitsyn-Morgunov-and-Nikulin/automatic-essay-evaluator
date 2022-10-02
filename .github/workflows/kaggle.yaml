@@ -25,5 +25,5 @@ jobs:
         run: |
           mkdir ~/.kaggle
           echo ${{ secrets.KAGGLE }} >> ~/.kaggle/kaggle.json 
-      - name: Submit solution
-        run: kaggle competitions submit -c feedback-prize-english-language-learning -f src/kaggle.ipynb -m ${{ github.sha }}
+      - name: Push kernel
+        run: kaggle kernels push -p src/

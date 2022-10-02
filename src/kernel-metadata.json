@@ -1,0 +1,13 @@
+{
+  "id": "alukaevdanis/feedback-prize-english-language-learning",
+  "title": "feedback-prize-english-language-learning",
+  "code_file": "kaggle.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": "true",
+  "enable_gpu": "false",
+  "enable_internet": "false",
+  "dataset_sources": [],
+  "competition_sources": ["feedback-prize-english-language-learning"],
+  "kernel_sources": []
+}

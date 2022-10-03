@@ -105,6 +105,7 @@ venv.bak/
 
 # MACOS
 .DS_Store
-*.csv
+data/raw/*
+
 .idea/
 requirements-dev.txt

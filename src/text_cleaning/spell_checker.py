@@ -2,7 +2,7 @@ __all__ = ['SmartSpellChecker']
 
 import re
 from collections import Counter
-from functools import cache
+from functools import lru_cache
 from typing import Iterable
 
 from spellchecker import SpellChecker
@@ -50,7 +50,7 @@ class SmartSpellChecker:
     def __init__(self):
         self.spellcheck = SpellChecker()
 
-    @cache
+    @lru_cache(maxsize=None)
     def correct_word(self, mismatch: str):
         if mismatch in custom_mappings:
             return custom_mappings[mismatch]

@@ -11,6 +11,7 @@ __all__ = [
 import re
 from collections import Counter
 from string import punctuation
+from typing import Dict
 
 from src.text_cleaning.spell_checker import SmartSpellChecker
 
@@ -46,14 +47,14 @@ def preprocess_test(text: str) -> str:
     return text
 
 
-def get_word_counter(text: str) -> dict[str, int]:
+def get_word_counter(text: str) -> Dict[str, int]:
     # removes punctuation and count words in sentence
     text = re.sub(r"[.,!?;:]", " ", text)
 
     return Counter(text.split())
 
 
-def count_punctuation(text: str) -> dict[str, int]:
+def count_punctuation(text: str) -> Dict[str, int]:
     features = {}
 
     for symbol in (punctuation + " "):
@@ -62,7 +63,7 @@ def count_punctuation(text: str) -> dict[str, int]:
     return features
 
 
-def count_how_many_words_are_repeating(text: str) -> dict[str, int]:
+def count_how_many_words_are_repeating(text: str) -> Dict[str, int]:
     word_count = get_word_counter(text)
     features = {}
 
@@ -74,10 +75,10 @@ def count_how_many_words_are_repeating(text: str) -> dict[str, int]:
     return features
 
 
-def count_misspelled_words(text: str, spellcheck: SmartSpellChecker) -> dict[str, int]:
+def count_misspelled_words(text: str, spellcheck: SmartSpellChecker) -> Dict[str, int]:
     unknown_words = spellcheck.unknown(get_word_counter(text))
     return {'n_misspelled_words': len(unknown_words)}
 
 
-def count_words(text: str) -> dict[str, int]:
+def count_words(text: str) -> Dict[str, int]:
     return {'length': len(get_word_counter(text))}

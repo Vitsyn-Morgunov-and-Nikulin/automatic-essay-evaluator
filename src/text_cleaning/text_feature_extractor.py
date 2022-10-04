@@ -14,7 +14,7 @@ class HandcraftedTextFeatureExtractor:
     def __init__(self, spellcheck: SmartSpellChecker):
         self._spellcheck = spellcheck
 
-    def _generate_features(self, raw_text: str):
+    def _generate_features(self, raw_text: str) -> Dict[str, int]:
         preprocessed_text = preprocess_test(raw_text)
         cleaned_text = self._spellcheck.correct_text(preprocessed_text)
 

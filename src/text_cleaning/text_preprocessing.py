@@ -9,7 +9,7 @@ class TextPreprocessor:
     def __init__(self, spellcheck: SmartSpellChecker):
         self._spellcheck = spellcheck
 
-    def preprocess_texts(self, data: pd.Series):
+    def preprocess_texts(self, data: pd.Series) -> pd.Series:
         out_texts = []
 
         for text in tqdm(data, desc="Preprocessing texts (correcting mistakes, removing tokens, etc.)..."):

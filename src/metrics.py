@@ -1,3 +1,5 @@
+from typing import Dict
+
 import pandas as pd
 from sklearn.metrics import mean_squared_error
 
@@ -7,7 +9,7 @@ class MSEMetric:
         super().__init__()
 
     @staticmethod
-    def evaluate_mse_class(y_pred: pd.DataFrame, y_true: pd.DataFrame) -> dict:
+    def evaluate_mse_class(y_pred: pd.DataFrame, y_true: pd.DataFrame) -> Dict[str, float]:
         result = {}
 
         for column in y_pred.columns:

@@ -29,7 +29,6 @@ class TextFeatureExtractor:
 
     def extract_features(self, data: pd.Series) -> pd.DataFrame:
         features = [self._generate_features(text) for text in tqdm(data, desc="Gen. text features...")]
-        print(features)
         return pd.DataFrame(features, index=data.index)
 
     def preprocess_texts(self, data: pd.Series):

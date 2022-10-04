@@ -106,6 +106,6 @@ venv.bak/
 # MACOS
 .DS_Store
 data/raw/*
-
+catboost_info/
 .idea/
 requirements-dev.txt

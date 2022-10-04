@@ -1,7 +1,7 @@
 import pandas as pd
 
 from src.text_cleaning.spell_checker import SmartSpellChecker
-from src.text_cleaning.text_feature_extractor import TextFeatureExtractor
+from src.text_cleaning.text_feature_extractor import HandcraftedTextFeatureExtractor
 
 
 def test_text_feature_generation():
@@ -9,7 +9,7 @@ def test_text_feature_generation():
 
     spellcheck = SmartSpellChecker()
 
-    feature_extractor = TextFeatureExtractor(spellcheck)
+    feature_extractor = HandcraftedTextFeatureExtractor(spellcheck)
     feature_df = feature_extractor.extract_features(train_csv)
 
     assert len(feature_df.columns) == 42

@@ -11,18 +11,18 @@ from src.constant_predictor import load_train_test_df
 from src.metrics import MSEMetric
 from src.solution import Solution
 from src.text_cleaning.spell_checker import SmartSpellChecker
-from src.text_cleaning.text_feature_extractor import TextFeatureExtractor
+from src.text_cleaning.text_feature_extractor import HandcraftedTextFeatureExtractor
 from src.text_cleaning.text_preprocessing import TextPreprocessor
 
 
-class BertFeaturePredictor(Solution):
+class BertWithHandcraftedFeaturePredictor(Solution):
     device = 'GPU' if torch.cuda.is_available() else None
 
     def __init__(self, config: dict):
-        super(BertFeaturePredictor, self).__init__()
+        super(BertWithHandcraftedFeaturePredictor, self).__init__()
         spellcheck = SmartSpellChecker()
 
-        self.feature_extractor = TextFeatureExtractor(spellcheck)
+        self.feature_extractor = HandcraftedTextFeatureExtractor(spellcheck)
         self.text_preprocessing = TextPreprocessor(spellcheck)
         self.bert = BertFeatureExtractor(model_name=config['model_name'])
 
@@ -98,7 +98,7 @@ def main():
 
     train_df, test_df = load_train_test_df()
 
-    predictor = BertFeaturePredictor(config)
+    predictor = BertWithHandcraftedFeaturePredictor(config)
     metric = MSEMetric()
 
     train_data, val_data = train_test_split(train_df, test_size=0.2)

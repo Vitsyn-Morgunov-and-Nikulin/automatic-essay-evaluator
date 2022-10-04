@@ -10,7 +10,7 @@ from src.text_cleaning.utils import (count_how_many_words_are_repeating,
                                      count_words, preprocess_test)
 
 
-class TextFeatureExtractor:
+class HandcraftedTextFeatureExtractor:
     def __init__(self, spellcheck: SmartSpellChecker):
         self._spellcheck = spellcheck
 

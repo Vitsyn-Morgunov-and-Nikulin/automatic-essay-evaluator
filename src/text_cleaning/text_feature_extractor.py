@@ -11,8 +11,8 @@ from src.text_cleaning.utils import (count_how_many_words_are_repeating,
 
 
 class TextFeatureExtractor:
-    def __init__(self):
-        self._spellcheck = SmartSpellChecker()
+    def __init__(self, spellcheck: SmartSpellChecker):
+        self._spellcheck = spellcheck
 
     def _generate_features(self, raw_text: str):
         preprocessed_text = preprocess_test(raw_text)
@@ -28,15 +28,5 @@ class TextFeatureExtractor:
         return reduce(lambda x, y: {**x, **y}, features)
 
     def extract_features(self, data: pd.Series) -> pd.DataFrame:
-        features = [self._generate_features(text) for text in tqdm(data, desc="Gen. text features...")]
+        features = [self._generate_features(text) for text in tqdm(data, desc="Gen. handcraft text features...")]
         return pd.DataFrame(features, index=data.index)
-
-    def preprocess_texts(self, data: pd.Series):
-        out_texts = []
-
-        for text in tqdm(data, desc="Preprocessing texts..."):
-            text = preprocess_test(text)
-            text = self._spellcheck.correct_text(text)
-            out_texts.append(text)
-
-        return pd.Series(out_texts, index=data.index)

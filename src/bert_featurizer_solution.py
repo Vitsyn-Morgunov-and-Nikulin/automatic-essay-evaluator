@@ -1,33 +1,43 @@
-import os
 from pathlib import Path
 from typing import Union
 
 import pandas as pd
 import torch.cuda
+from catboost import CatBoostRegressor
 from sklearn.model_selection import train_test_split
 
 from bert_featurizer import BertFeatureExtractor
-from src.constant_predictor import set_env_if_kaggle_environ
-from src.text_cleaning.text_feature_extractor import TextFeatureExtractor
-from src.solution import Solution
-from catboost import CatBoostRegressor
+from src.constant_predictor import load_train_test_df
 from src.metrics import MSEMetric
+from src.solution import Solution
+from src.text_cleaning.spell_checker import SmartSpellChecker
+from src.text_cleaning.text_feature_extractor import TextFeatureExtractor
+from src.text_cleaning.text_preprocessing import TextPreprocessor
 
 
 class BertFeaturePredictor(Solution):
-    def __init__(self):
-        super(BertFeaturePredictor, self).__init__()
-        self.device = 'GPU' if torch.cuda.is_available() else None
+    device = 'GPU' if torch.cuda.is_available() else None
 
-        self.feature_extractor = TextFeatureExtractor()
-        self.bert = BertFeatureExtractor(model_name='bert-base-uncased')
+    def __init__(self, config: dict):
+        super(BertFeaturePredictor, self).__init__()
+        spellcheck = SmartSpellChecker()
+
+        self.feature_extractor = TextFeatureExtractor(spellcheck)
+        self.text_preprocessing = TextPreprocessor(spellcheck)
+        self.bert = BertFeatureExtractor(model_name=config['model_name'])
 
         # classification model for each column
         self.columns = ['cohesion', 'syntax', 'vocabulary', 'phraseology', 'grammar', 'conventions']
-        self.models = [CatBoostRegressor(task_type=self.device, verbose=False, iterations=5000) for _ in range(len(self.columns))]
+        self.models = [
+            CatBoostRegressor(
+                iterations=config['catboost_iter'],
+                task_type=self.device,
+                verbose=False,
+            ) for _ in range(len(self.columns))
+        ]
 
     def _preprocess_texts(self, X: pd.Series):
-        cleaned_text = self.feature_extractor.preprocess_texts(X)
+        cleaned_text = self.text_preprocessing.preprocess_texts(X)
         bert_features = self.bert.extract_features(cleaned_text)
         handcrafted_features = self.feature_extractor.extract_features(X)
         features_df = pd.concat([bert_features, handcrafted_features], axis='columns')
@@ -56,28 +66,39 @@ class BertFeaturePredictor(Solution):
         return pd.DataFrame(prediction)
 
     def save(self, directory: Union[str, Path]):
-        pass
+        directory = Path(directory)
+        if not directory.exists():
+            directory.mkdir(parents=True)
+
+        for ii, model in enumerate(self.models):
+            column = self.columns[ii]
+            path = directory / f'catboost_{column}.cbm'
+            model.save_model(str(path))
+
+        print("Successfully saved model!")
 
     def load(self, directory: Union[str, Path]):
-        pass
+        directory = Path(directory)
+        if not directory.is_dir():
+            raise OSError(f"Dir. {directory.absolute()} does not exist")
+
+        for ii, model in enumerate(self.models):
+            column = self.columns[ii]
+            path = directory / f'catboost_{column}.cbm'
+            model.load_model(str(path))
+
+        print("Successfully loaded model!")
 
 
 def main():
-    set_env_if_kaggle_environ()
+    config = {
+        'model_name': 'bert-base-uncased',
+        'catboost_iter': 5000,
+    }
 
-    train_df_path = Path(os.environ['DATA_PATH']) / 'train.csv'
-    test_df_path = Path(os.environ['DATA_PATH']) / 'test.csv'
+    train_df, test_df = load_train_test_df()
 
-    if not test_df_path.is_file():
-        raise OSError(f"File not found: {test_df_path.absolute()}")
-
-    if not train_df_path.is_file():
-        raise OSError(f"File not found: {train_df_path.absolute()}")
-
-    train_df = pd.read_csv(train_df_path)
-    test_df = pd.read_csv(test_df_path)
-
-    predictor = BertFeaturePredictor()
+    predictor = BertFeaturePredictor(config)
     metric = MSEMetric()
 
     train_data, val_data = train_test_split(train_df, test_size=0.2)

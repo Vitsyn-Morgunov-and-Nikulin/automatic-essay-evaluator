@@ -1,4 +1,12 @@
-__all__ = ['count_words', 'count_punctuation', 'count_how_many_words_are_repeating', 'count_misspelled_words']
+"""This file contains functions that can generates hand-crafted features from the text"""
+
+__all__ = [
+    'count_words',
+    'count_punctuation',
+    'count_how_many_words_are_repeating',
+    'count_misspelled_words',
+    'preprocess_test'
+]
 
 import re
 from collections import Counter
@@ -25,8 +33,8 @@ underscores_to_replace = {
 }
 
 
-def preprocess_test(text: str):
-    # Removing digits, special signs, double spaces and tabulation, underscores
+def preprocess_test(text: str) -> str:
+    # Removes digits, special signs, double spaces and tabulation, underscores
     for key, value in underscores_to_replace.items():
         text = text.replace(key, value)
 
@@ -38,14 +46,14 @@ def preprocess_test(text: str):
     return text
 
 
-def get_word_counter(text: str):
+def get_word_counter(text: str) -> dict[str, int]:
     # removes punctuation and count words in sentence
     text = re.sub(r"[.,!?;:]", " ", text)
 
     return Counter(text.split())
 
 
-def count_punctuation(text: str):
+def count_punctuation(text: str) -> dict[str, int]:
     features = {}
 
     for symbol in (punctuation + " "):
@@ -54,7 +62,7 @@ def count_punctuation(text: str):
     return features
 
 
-def count_how_many_words_are_repeating(text: str):
+def count_how_many_words_are_repeating(text: str) -> dict[str, int]:
     word_count = get_word_counter(text)
     features = {}
 
@@ -66,10 +74,10 @@ def count_how_many_words_are_repeating(text: str):
     return features
 
 
-def count_misspelled_words(text: str, spellcheck: SmartSpellChecker):
+def count_misspelled_words(text: str, spellcheck: SmartSpellChecker) -> dict[str, int]:
     unknown_words = spellcheck.unknown(get_word_counter(text))
     return {'n_misspelled_words': len(unknown_words)}
 
 
-def count_words(text: str):
+def count_words(text: str) -> dict[str, int]:
     return {'length': len(get_word_counter(text))}

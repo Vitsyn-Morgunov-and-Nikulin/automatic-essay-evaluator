@@ -11,7 +11,8 @@ from src.constant_predictor import load_train_test_df
 from src.metrics import MSEMetric
 from src.solution import Solution
 from src.text_cleaning.spell_checker import SmartSpellChecker
-from src.text_cleaning.text_feature_extractor import HandcraftedTextFeatureExtractor
+from src.text_cleaning.text_feature_extractor import \
+    HandcraftedTextFeatureExtractor
 from src.text_cleaning.text_preprocessing import TextPreprocessor
 
 

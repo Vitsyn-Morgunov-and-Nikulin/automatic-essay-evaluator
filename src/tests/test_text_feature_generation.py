@@ -1,7 +1,8 @@
 import pandas as pd
 
 from src.text_cleaning.spell_checker import SmartSpellChecker
-from src.text_cleaning.text_feature_extractor import HandcraftedTextFeatureExtractor
+from src.text_cleaning.text_feature_extractor import \
+    HandcraftedTextFeatureExtractor
 
 
 def test_text_feature_generation():

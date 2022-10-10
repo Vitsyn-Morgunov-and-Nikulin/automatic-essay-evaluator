@@ -1,15 +1,15 @@
-import pandas as pd
-
-from src.text_cleaning.spell_checker import SmartSpellChecker
-from src.text_cleaning.text_preprocessing import TextPreprocessor
+from src.data_reader import load_train_test_df
+from src.spell_checker import SmartSpellChecker
+from src.text_preprocessings.spellcheck_preprocessing import \
+    SpellcheckTextPreprocessor
 
 
 def test_text_cleaning():
-    train_csv = pd.read_csv("src/tests/data/train_sample.csv").full_text
+    train_df, test_df = load_train_test_df(is_testing=True)
 
     spellcheck = SmartSpellChecker()
-    text_preprocessor = TextPreprocessor(spellcheck)
+    text_preprocessor = SpellcheckTextPreprocessor(spellcheck)
 
-    text_series = text_preprocessor.preprocess_texts(train_csv)
+    cleaned_texts = text_preprocessor.preprocess_data(train_df.full_text)
 
-    assert len(text_series) == 5
+    assert len(cleaned_texts) == 5

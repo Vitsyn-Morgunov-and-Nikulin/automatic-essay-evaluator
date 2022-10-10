@@ -1,16 +1,11 @@
-import pandas as pd
-
-from src.constant_predictor import ConstantPredictorSolution
+from src.data_reader import load_train_test_df
+from src.solutions.constant_predictor import ConstantPredictorSolution
 
 
 def test_constant_predictor():
-    test_df = pd.DataFrame({
-        "text_id": [0],
-        "full_data": ["I was thinking about the studies"]
-    })
+    train_df, test_df = load_train_test_df(is_testing=True)
 
     predictor = ConstantPredictorSolution()
-
     submission_df = predictor.predict(test_df)
 
-    assert len(submission_df) == 1
+    assert submission_df.shape == (len(test_df), 7)

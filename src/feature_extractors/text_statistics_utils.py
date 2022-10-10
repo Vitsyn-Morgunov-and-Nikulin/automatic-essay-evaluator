@@ -13,7 +13,7 @@ from collections import Counter
 from string import punctuation
 from typing import Dict
 
-from src.text_cleaning.spell_checker import SmartSpellChecker
+from src.spell_checker import SmartSpellChecker
 
 underscores_to_replace = {
     'Generic_Name': 'name',

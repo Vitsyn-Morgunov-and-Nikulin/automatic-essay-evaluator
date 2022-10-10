@@ -4,28 +4,33 @@ from typing import Union
 import pandas as pd
 import torch.cuda
 from catboost import CatBoostRegressor
-from sklearn.model_selection import train_test_split
 
-from bert_featurizer import BertFeatureExtractor
-from src.constant_predictor import load_train_test_df
-from src.metrics import MSEMetric
-from src.solution import Solution
-from src.text_cleaning.spell_checker import SmartSpellChecker
-from src.text_cleaning.text_feature_extractor import \
+from src.cross_validate import CrossValidation
+from src.feature_extractors.bert_pretrain_extractor import \
+    BertPretrainFeatureExtractor
+from src.feature_extractors.text_statistics_extractor import \
     HandcraftedTextFeatureExtractor
-from src.text_cleaning.text_preprocessing import TextPreprocessor
+from src.solutions.base_solution import BaseSolution
+from src.solutions.constant_predictor import load_train_test_df
+from src.spell_checker import SmartSpellChecker
+from src.text_preprocessings.spellcheck_preprocessing import \
+    SpellcheckTextPreprocessor
+from src.utils import get_x_columns, seed_everything, validate_x, validate_y
+
+seed_everything()
+
+spellcheck = SmartSpellChecker()
 
 
-class BertWithHandcraftedFeaturePredictor(Solution):
+class BertWithHandcraftedFeaturePredictor(BaseSolution):
     device = 'GPU' if torch.cuda.is_available() else None
 
     def __init__(self, config: dict):
         super(BertWithHandcraftedFeaturePredictor, self).__init__()
-        spellcheck = SmartSpellChecker()
 
         self.feature_extractor = HandcraftedTextFeatureExtractor(spellcheck)
-        self.text_preprocessing = TextPreprocessor(spellcheck)
-        self.bert = BertFeatureExtractor(model_name=config['model_name'])
+        self.text_preprocessing = SpellcheckTextPreprocessor(spellcheck)
+        self.bert = BertPretrainFeatureExtractor(model_name=config['model_name'])
 
         # classification model for each column
         self.columns = ['cohesion', 'syntax', 'vocabulary', 'phraseology', 'grammar', 'conventions']
@@ -37,16 +42,19 @@ class BertWithHandcraftedFeaturePredictor(Solution):
             ) for _ in range(len(self.columns))
         ]
 
-    def _preprocess_texts(self, X: pd.Series):
-        cleaned_text = self.text_preprocessing.preprocess_texts(X)
-        bert_features = self.bert.extract_features(cleaned_text)
-        handcrafted_features = self.feature_extractor.extract_features(X)
+    def transform_data(self, X: pd.Series) -> pd.DataFrame:
+        cleaned_text = self.text_preprocessing.preprocess_data(X)
+        bert_features = self.bert.generate_features(cleaned_text)
+        handcrafted_features = self.feature_extractor.generate_features(X)
         features_df = pd.concat([bert_features, handcrafted_features], axis='columns')
 
         return features_df
 
-    def fit(self, X: pd.Series, y: pd.DataFrame):
-        features_df = self._preprocess_texts(X)
+    def fit(self, X: pd.DataFrame, y: pd.DataFrame) -> None:
+        validate_x(X)
+        validate_y(y)
+
+        features_df = self.transform_data(X.full_text)
 
         for ii, column in enumerate(self.columns):
             print(f"-> Training model on: {column}...")
@@ -55,8 +63,10 @@ class BertWithHandcraftedFeaturePredictor(Solution):
 
             model.fit(X=features_df, y=target)
 
-    def predict(self, X: pd.Series) -> pd.DataFrame:
-        features_df = self._preprocess_texts(X)
+    def predict(self, X: pd.DataFrame) -> pd.DataFrame:
+        validate_x(X)
+
+        features_df = self.transform_data(X.full_text)
 
         prediction = {}
         for ii, column in enumerate(self.columns):
@@ -64,9 +74,12 @@ class BertWithHandcraftedFeaturePredictor(Solution):
             model = self.models[ii]
             prediction[column] = model.predict(features_df)
 
-        return pd.DataFrame(prediction)
+        y_pred = pd.DataFrame(prediction, index=X.index)
+        y_pred['text_id'] = X.text_id
 
-    def save(self, directory: Union[str, Path]):
+        return y_pred
+
+    def save(self, directory: Union[str, Path]) -> None:
         directory = Path(directory)
         if not directory.exists():
             directory.mkdir(parents=True)
@@ -78,7 +91,7 @@ class BertWithHandcraftedFeaturePredictor(Solution):
 
         print("Successfully saved model!")
 
-    def load(self, directory: Union[str, Path]):
+    def load(self, directory: Union[str, Path]) -> None:
         directory = Path(directory)
         if not directory.is_dir():
             raise OSError(f"Dir. {directory.absolute()} does not exist")
@@ -95,24 +108,26 @@ def main():
     config = {
         'model_name': 'bert-base-uncased',
         'catboost_iter': 5000,
+        'n_splits': 5
     }
 
     train_df, test_df = load_train_test_df()
 
+    x_columns = get_x_columns()
+    train_x, train_y = train_df[x_columns], train_df.drop(columns=['full_text'])
+
     predictor = BertWithHandcraftedFeaturePredictor(config)
-    metric = MSEMetric()
+    cv = CrossValidation(n_splits=config['n_splits'])
 
-    train_data, val_data = train_test_split(train_df, test_size=0.2)
+    results = cv.fit(predictor, train_x, train_y)
+    print("CV results")
+    print(results)
+    results.to_csv("cv_results.csv")
 
-    predictor.fit(train_data.full_text, train_data[predictor.columns])
-    y_pred = predictor.predict(val_data.full_text)
-
-    print(f"Calculation class metric: {metric.evaluate_mse_class(y_pred, val_data[predictor.columns])}")
-    print(f"Calculating kaggle metric: {metric.evaluate(y_pred, val_data[predictor.columns])}")
-
-    submission_df = predictor.predict(test_df.full_text)
-
+    submission_df = cv.predict(test_df)
     submission_df.to_csv("submission.csv", index=False)
+
+    print("Finished training!")
 
 
 if __name__ == '__main__':

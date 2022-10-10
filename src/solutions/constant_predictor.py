@@ -50,7 +50,7 @@ def main():
     train_data, test_data = train_test_split(train_df, test_size=0.2)
     y_pred = predictor.predict(test_data)
 
-    y_true = test_data[['cohesion', 'syntax', 'vocabulary', 'phraseology', 'grammar', 'conventions']]
+    y_true = test_data[['text_id', 'cohesion', 'syntax', 'vocabulary', 'phraseology', 'grammar', 'conventions']]
     metric = MSEMetric()
 
     print(f"Calculation class metric: {metric.evaluate_class_rmse(y_pred, y_true)}")

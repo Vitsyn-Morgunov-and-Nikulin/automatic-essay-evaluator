@@ -29,3 +29,8 @@ tqdm==4.64.1
 typing_extensions==4.3.0
 urllib3==1.26.12
 zipp==3.8.1
+torch==1.12.1
+transformers==4.22.2
+pyspellchecker==0.7.0
+catboost==1.0.6
+scikit-learn==1.0.2

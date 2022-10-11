@@ -11,4 +11,3 @@ test:
 	flake8
 	isort src/
 	pytest
-

@@ -30,7 +30,7 @@ class BertWithHandcraftedFeaturePredictor(BaseSolution):
 
         self.feature_extractor = HandcraftedTextFeatureExtractor(spellcheck)
         self.text_preprocessing = SpellcheckTextPreprocessor(spellcheck)
-        self.bert = BertPretrainFeatureExtractor(model_name=config['model_name'])
+        self.bert = BertPretrainFeatureExtractor(model_name=config['model_name'], cache_dir=config['saving_dir'])
 
         # classification model for each column
         self.columns = ['cohesion', 'syntax', 'vocabulary', 'phraseology', 'grammar', 'conventions']
@@ -89,8 +89,6 @@ class BertWithHandcraftedFeaturePredictor(BaseSolution):
             path = directory / f'catboost_{column}.cbm'
             model.save_model(str(path))
 
-        print("Successfully saved model!")
-
     def load(self, directory: Union[str, Path]) -> None:
         directory = Path(directory)
         if not directory.is_dir():
@@ -101,17 +99,17 @@ class BertWithHandcraftedFeaturePredictor(BaseSolution):
             path = directory / f'catboost_{column}.cbm'
             model.load_model(str(path))
 
-        print("Successfully loaded model!")
-
 
 def main():
     config = {
         'model_name': 'bert-base-uncased',
         'catboost_iter': 5000,
-        'n_splits': 5
+        'n_splits': 5,
+        'saving_dir': 'checkpoints/BertWithHandcraftedFeaturePredictor',
     }
 
     train_df, test_df = load_train_test_df()
+    # train_df = train_df.iloc[:10]
 
     x_columns = get_x_columns()
     train_x, train_y = train_df[x_columns], train_df.drop(columns=['full_text'])
@@ -124,8 +122,12 @@ def main():
     print(results)
     results.to_csv("cv_results.csv")
 
+    print(f"CV mean: {results.iloc[len(results) - 1].mean()}")
+
     submission_df = cv.predict(test_df)
     submission_df.to_csv("submission.csv", index=False)
+
+    cv.save(config['saving_dir'])
 
     print("Finished training!")
 

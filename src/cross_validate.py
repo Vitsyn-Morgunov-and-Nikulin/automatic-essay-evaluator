@@ -1,5 +1,6 @@
 from copy import deepcopy
-from typing import List
+from pathlib import Path
+from typing import List, Union
 
 import numpy as np
 import pandas as pd
@@ -81,3 +82,32 @@ class CrossValidation:
         X = pd.concat([X, mean_class_predictions], axis='columns')
 
         return X
+
+    def save(self, path: Union[str, Path]):
+        assert self.models is not [], "Models should be trained before saving them"
+
+        path = Path(path)
+        if not path.is_dir():
+            path.mkdir(parents=True)
+
+        for ii, model in enumerate(self.models):
+            cv_model_path = path / f"cv_fold_{ii}"
+            model.save(cv_model_path)
+
+        print(f"Saved weights successfully to: {path.resolve()}.")
+
+    def load(self, path: Union[str, Path], predictor: BaseSolution):
+        path = Path(path)
+
+        assert path.is_dir(), f"Weights dir. not exists: {path.resolve()}"
+
+        for ii in range(self.k_fold.n_splits):
+            cv_model_path = path / f"cv_fold_{ii}"
+
+            assert cv_model_path.is_dir(), f"Dir. with fold={ii} not exists: {cv_model_path.resolve()}"
+
+            predictor_copy = deepcopy(predictor)
+            predictor_copy.load(cv_model_path)
+            self.models.append(predictor_copy)
+
+        print(f"Loaded model successfully from: {path.resolve()}.")

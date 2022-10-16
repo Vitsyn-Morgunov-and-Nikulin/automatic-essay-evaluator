@@ -31,12 +31,11 @@ class TermFrequencyFeaturizer:
         normality.
         """
         bins = self._make_bins(n_bins)
-        feature_names = [
+        feature_df = texts.apply(self._compute_word_frequency_histogram, bins=bins)
+        feature_df.columns = [
             f"bin_{round(bins[i], 1)}_{round(bins[i+1], 1)}"
             for i in range(len(bins) - 1)
         ]
-        feature_values = texts.apply(self._compute_word_frequency_histogram, bins=bins)
-        feature_df = pd.DataFrame(feature_values, columns=feature_names)
         return feature_df
 
     def _make_bins(self, n_bins: int) -> np.ndarray:

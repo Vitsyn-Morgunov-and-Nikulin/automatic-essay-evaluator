@@ -34,3 +34,4 @@ transformers==4.22.2
 pyspellchecker==0.7.0
 catboost==1.0.6
 scikit-learn==1.0.2
+nltk==3.7

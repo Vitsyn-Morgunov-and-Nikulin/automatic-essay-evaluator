@@ -1,8 +1,9 @@
-import pandas as pd
-import numpy as np
 from collections import defaultdict
 from typing import Dict, List
+
 import nltk
+import numpy as np
+import pandas as pd
 
 from src.feature_extractors.base_extractor import BaseExtractor
 

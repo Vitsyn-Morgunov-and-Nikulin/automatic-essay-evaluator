@@ -18,13 +18,14 @@ class TermFrequencyFeatureExtractor(BaseExtractor):
         >>> model = catboost.CatBoostRegressor()
         >>> model.fit(x_train, y_train)
 
-    Possible improvements: 
+    Possible improvements:
         - Add word corrections: triying -> trying
         - Count not only word frequencies, but number of unique words in each hist bin
     """
-    MAX_TERM_FREQUENCY = 23135751162 # it's so in the term frequency dataset
 
-    def __init__(self, n_bins: int=40):
+    MAX_TERM_FREQUENCY = 23135751162  # it's so in the term frequency dataset
+
+    def __init__(self, n_bins: int = 40):
         self.term2freq: Dict[str, int] = self._load_term2freq_dict()
         self.bins = self._make_bins(n_bins)
         self.feature_names = [
@@ -42,7 +43,7 @@ class TermFrequencyFeatureExtractor(BaseExtractor):
     def _load_term2freq_dict(self) -> Dict[str, int]:
         term_frequencies = pd.read_csv("data/word_frequencies/unigram_freq.csv")
         term2freq: Dict[str, int] = defaultdict(lambda: 0)
-        term2freq.update(term_frequencies.set_index("word").to_dict()['count'])
+        term2freq.update(term_frequencies.set_index("word").to_dict()["count"])
         return term2freq
 
     def generate_features(self, texts: pd.Series) -> pd.DataFrame:
@@ -69,6 +70,5 @@ class TermFrequencyFeatureExtractor(BaseExtractor):
     def _build_histogram(self, values: List[int]) -> np.ndarray:
         values_log = np.log1p(values)
         histogram, __ = np.histogram(values_log, bins=self.bins)
-        normalized_histogram = (histogram / len(values))
+        normalized_histogram = histogram / len(values)
         return normalized_histogram
-

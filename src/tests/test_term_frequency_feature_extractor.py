@@ -1,7 +1,9 @@
 import pandas as pd
 
 from src.data_reader import load_train_test_df
-from src.feature_extractors.term_frequency_extractor import TermFrequencyFeatureExtractor
+from src.feature_extractors.term_frequency_feature_extractor import (
+    TermFrequencyFeatureExtractor,
+)
 
 
 def test_text_feature_generation():

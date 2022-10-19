@@ -31,7 +31,7 @@ class ManyBertWithHandcraftedFeaturePredictor(BaseSolution):
 
         self.feature_extractor = HandcraftedTextFeatureExtractor(spellcheck)
         self.text_preprocessing = SpellcheckTextPreprocessor(spellcheck)
-        self.berts = ManyBertPretrainFeatureExtractor(model_names=config['model_names'], cache_dir=config['saving_dir'])
+        self.berts = ManyBertPretrainFeatureExtractor(model_names=config['model_names'])
 
         # classification model for each column
         self.columns = ['cohesion', 'syntax', 'vocabulary', 'phraseology', 'grammar', 'conventions']

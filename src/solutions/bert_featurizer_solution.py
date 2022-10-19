@@ -30,7 +30,7 @@ class BertWithHandcraftedFeaturePredictor(BaseSolution):
 
         self.feature_extractor = HandcraftedTextFeatureExtractor(spellcheck)
         self.text_preprocessing = SpellcheckTextPreprocessor(spellcheck)
-        self.bert = BertPretrainFeatureExtractor(model_name=config['model_name'], cache_dir=config['saving_dir'])
+        self.bert = BertPretrainFeatureExtractor(model_name=config['model_name'])
 
         # classification model for each column
         self.columns = ['cohesion', 'syntax', 'vocabulary', 'phraseology', 'grammar', 'conventions']

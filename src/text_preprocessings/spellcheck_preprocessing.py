@@ -22,7 +22,7 @@ class SpellcheckTextPreprocessor(BasePreprocessor):
 
         return pd.Series(out_texts, index=data.index)
 
-    @lru_cache
+    @lru_cache()
     def _preprocess_text(self, text: str) -> str:
         text = preprocess_test(text)
         text = self._spellcheck.correct_text(text)

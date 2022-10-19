@@ -1,3 +1,5 @@
+from functools import lru_cache
+
 import pandas as pd
 from tqdm import tqdm
 
@@ -15,8 +17,13 @@ class SpellcheckTextPreprocessor(BasePreprocessor):
         out_texts = []
 
         for text in tqdm(data, desc="Preprocessing texts (correcting mistakes, removing tokens, etc.)..."):
-            text = preprocess_test(text)
-            text = self._spellcheck.correct_text(text)
+            text = self._preprocess_text(text)
             out_texts.append(text)
 
         return pd.Series(out_texts, index=data.index)
+
+    @lru_cache
+    def _preprocess_text(self, text: str) -> str:
+        text = preprocess_test(text)
+        text = self._spellcheck.correct_text(text)
+        return text

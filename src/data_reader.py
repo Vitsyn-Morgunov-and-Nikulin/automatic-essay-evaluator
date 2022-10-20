@@ -23,8 +23,8 @@ def load_train_test_df(is_testing: bool = False) -> Tuple[pd.DataFrame, pd.DataF
     set_env_if_kaggle_environ()
 
     if is_testing:
-        train_df_path = Path("src/tests/data/train_sample.csv")
-        test_df_path = Path("src/tests/data/test_sample.csv")
+        train_df_path = Path("tests/data/train_sample.csv")
+        test_df_path = Path("tests/data/test_sample.csv")
 
     else:
         train_df_path = Path(os.environ['DATA_PATH']) / 'train.csv'

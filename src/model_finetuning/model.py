@@ -8,10 +8,8 @@ from torch.optim import AdamW
 from transformers import AutoTokenizer, AutoConfig, AutoModel, get_cosine_schedule_with_warmup
 import torch.nn as nn
 from src.model_finetuning.metric import MCRMSELoss
-from src.utils import seed_everything
-from src.data_reader import load_train_test_df
 
-seed_everything()
+from src.data_reader import load_train_test_df
 
 
 def num_train_samples():
@@ -54,10 +52,10 @@ class BertLightningModel(pl.LightningModule):
         self.loss = MCRMSELoss()
 
         # freezing first 12 layers of DeBERTa from 24
-        # modules = [self.bert_model.deberta.embeddings, self.bert_model.deberta.encoder.layer[:20]]
-        # for module in modules:
-        #     for param in module.parameters():
-        #         param.requires_grad = False
+        modules = [self.model.embeddings, self.model.encoder.layer[:20]]
+        for module in modules:
+            for param in module.parameters():
+                param.requires_grad = False
 
     def forward(self, inputs):
         outputs = self.model(**inputs)
@@ -83,8 +81,8 @@ class BertLightningModel(pl.LightningModule):
         }
 
     def training_epoch_end(self, outputs):
-        mean_rmsle = sum(output['mc_rmse'].item() for output in outputs) / len(outputs)
-        self.log("train/epoch_loss", mean_rmsle)
+        mean_mc_rmse = sum(output['mc_rmse'].item() for output in outputs) / len(outputs)
+        self.log("train/epoch_loss", mean_mc_rmse)
 
     def validation_step(self, batch, batch_idx):
         inputs = batch
@@ -100,8 +98,8 @@ class BertLightningModel(pl.LightningModule):
         }
 
     def validation_epoch_end(self, outputs):
-        mean_rmsle = sum(output['mc_rmse'].item() for output in outputs) / len(outputs)
-        self.log('val/epoch_loss', mean_rmsle)
+        mean_mc_rmse = sum(output['mc_rmse'].item() for output in outputs) / len(outputs)
+        self.log('val/epoch_loss', mean_mc_rmse)
 
     def configure_optimizers(self):
         weight_decay = self.config['weight_decay']
@@ -112,8 +110,12 @@ class BertLightningModel(pl.LightningModule):
             {
                 'params': [p for n, p in self.named_parameters() if not any(nd in n for nd in no_decay)],
                 'lr': lr,
-                'weight_decay': weight_decay
-            },
+                'weight_decay': weight_decay,
+                'name': 'group1'
+            }, {
+                'params':  [p for n, p in self.named_parameters() if any(nd in n for nd in no_decay)],
+                'name': 'group2'
+            }
         ]
 
         optimizer = AdamW(optimizer_parameters, lr=lr, weight_decay=0.0, eps=1e-6, betas=(0.9, 0.999))

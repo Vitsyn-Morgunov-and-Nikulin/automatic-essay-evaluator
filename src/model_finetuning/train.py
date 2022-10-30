@@ -12,6 +12,11 @@ import pytorch_lightning as pl
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 import wandb
 
+from src.utils import seed_everything
+from src.model_finetuning.metric import MCRMSELoss
+
+seed_everything()
+
 
 def main():
     log_dir = Path("logs/")
@@ -34,17 +39,20 @@ def main():
         entity="parmezano",
         config=CONFIG,
         log_model='all',
-        id="train_deberta_model"
+        name="train_deberta_model"
     )
+    wandb.run.log_code(".")
+    wandb.watch(model, criterion=MCRMSELoss())
 
     lr_monitor = LearningRateMonitor(logging_interval='step')
 
     model_checkpoint = ModelCheckpoint(
         dirpath=str(log_dir.resolve()),
-        monitor='val/loss',
+        monitor='val/epoch_loss',
         verbose=True,
         mode='min',
         auto_insert_metric_name=True,
+        save_weights_only=True,
     )
 
     trainer = pl.Trainer(

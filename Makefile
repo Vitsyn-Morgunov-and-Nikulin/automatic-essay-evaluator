@@ -9,5 +9,5 @@ download_data:
 
 test:
 	flake8
-	isort src/
+	isort .
 	pytest

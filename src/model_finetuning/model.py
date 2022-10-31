@@ -3,13 +3,13 @@
 """
 import pytorch_lightning as pl
 import torch
-
-from torch.optim import AdamW
-from transformers import AutoTokenizer, AutoConfig, AutoModel, get_cosine_schedule_with_warmup
 import torch.nn as nn
-from src.model_finetuning.metric import MCRMSELoss
+from torch.optim import AdamW
+from torch.optim.lr_scheduler import CosineAnnealingLR
+from transformers import AutoConfig, AutoModel, AutoTokenizer
 
 from src.data_reader import load_train_test_df
+from src.model_finetuning.metric import MCRMSELoss
 
 
 def num_train_samples():
@@ -51,11 +51,14 @@ class BertLightningModel(pl.LightningModule):
 
         self.loss = MCRMSELoss()
 
-        # freezing first 12 layers of DeBERTa from 24
-        modules = [self.model.embeddings, self.model.encoder.layer[:20]]
+        # freezing first 20 layers of DeBERTa from 24
+        modules = [self.model.embeddings, self.model.encoder.layer[:self.config['num_frozen_layers']]]
         for module in modules:
             for param in module.parameters():
                 param.requires_grad = False
+
+        self.class_metric = None
+        self.best_metric = None
 
     def forward(self, inputs):
         outputs = self.model(**inputs)
@@ -89,44 +92,43 @@ class BertLightningModel(pl.LightningModule):
         labels = inputs.pop("labels", None)
         logits = self(inputs)
         loss = self.loss(logits, labels)
+        class_rmse = self.loss.class_mcrmse(logits, labels)
 
         self.log('val/loss', loss)
 
         return {
             'loss': loss,
-            'mc_rmse': loss
+            'mc_rmse': loss,
+            'class_mc_rmse': class_rmse
         }
 
     def validation_epoch_end(self, outputs):
         mean_mc_rmse = sum(output['mc_rmse'].item() for output in outputs) / len(outputs)
+        class_metrics = torch.stack([output['class_mc_rmse'] for output in outputs]).mean(0).tolist()
+        class_metrics = [round(item, 4) for item in class_metrics]
         self.log('val/epoch_loss', mean_mc_rmse)
 
+        if self.best_metric is None or mean_mc_rmse < self.best_metric:
+            self.best_metric = mean_mc_rmse
+            self.class_metric = class_metrics
+
     def configure_optimizers(self):
-        weight_decay = self.config['weight_decay']
+        # weight_decay = self.config['weight_decay']
         lr = self.config['lr']
 
-        no_decay = ["bias", "LayerNorm.bias", "LayerNorm.weight"]
-        optimizer_parameters = [
-            {
-                'params': [p for n, p in self.named_parameters() if not any(nd in n for nd in no_decay)],
-                'lr': lr,
-                'weight_decay': weight_decay,
-                'name': 'group1'
-            }, {
-                'params':  [p for n, p in self.named_parameters() if any(nd in n for nd in no_decay)],
-                'name': 'group2'
-            }
-        ]
+        # In original solution authors add weight decaying to some parameters
 
-        optimizer = AdamW(optimizer_parameters, lr=lr, weight_decay=0.0, eps=1e-6, betas=(0.9, 0.999))
+        optimizer = AdamW(self.parameters(), lr=lr, weight_decay=0.0, eps=1e-6, betas=(0.9, 0.999))
 
-        # epochs * int(len(train_data) * train_size / batch_size)
-        train_steps_in_epoch = int(num_train_samples() * self.config['train_size'] / self.config['batch_size'])
-
-        scheduler = get_cosine_schedule_with_warmup(
+        scheduler = CosineAnnealingLR(
             optimizer,
-            num_warmup_steps=0,
-            num_training_steps=train_steps_in_epoch * self.config['max_epochs'],
-            num_cycles=0.5
+            T_max=self.config['max_epochs'],
         )
         return [optimizer], [scheduler]
+
+    def predict_step(self, batch, batch_idx: int, dataloader_idx: int = 0):
+        inputs = batch
+        inputs.pop("labels", None)
+        logits = self(inputs)
+
+        return logits

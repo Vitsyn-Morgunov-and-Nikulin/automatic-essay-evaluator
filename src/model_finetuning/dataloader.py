@@ -1,11 +1,10 @@
-import torch
-
 import pandas as pd
-
-from torch.utils.data import Dataset, DataLoader
-from transformers import BertTokenizer
-from src.utils import get_target_columns
 import pytorch_lightning as pl
+import torch
+from torch.utils.data import DataLoader, Dataset
+from transformers import BertTokenizer
+
+from src.utils import get_target_columns
 
 
 def collate_fn(data):
@@ -44,8 +43,11 @@ class ClassificationDataset(Dataset):
             add_special_tokens=True,
             return_tensors='pt',
         )
-
-        self.features['labels'] = torch.as_tensor(df[get_target_columns()].values, dtype=torch.float32)
+        if 'cohesion' in self.df.columns:
+            self.features['labels'] = torch.as_tensor(df[get_target_columns()].values, dtype=torch.float32)
+        else:
+            data = torch.ones(size=(len(df), 6), dtype=torch.float32) * -1.
+            self.features['labels'] = data
 
     def __getitem__(self, item):
         """Returns dict with input_ids, token_type_ids, attention_mask, labels

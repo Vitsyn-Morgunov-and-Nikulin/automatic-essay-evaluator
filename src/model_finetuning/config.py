@@ -1,5 +1,3 @@
-
-
 CONFIG = dict(
     model_name="microsoft/deberta-v3-large",
     num_classes=6,
@@ -16,6 +14,8 @@ CONFIG = dict(
     precision=16,
     gradient_clip_val=1000,
     train_size=0.8,
+    num_cross_val_splits=5,
+    num_frozen_layers=20,  # out of 24 in deberta
 )
 
 # we can also try nn.SmoothL1Loss

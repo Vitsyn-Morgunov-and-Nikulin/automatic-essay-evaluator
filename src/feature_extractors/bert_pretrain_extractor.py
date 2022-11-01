@@ -10,13 +10,13 @@ class BertPretrainFeatureExtractor(BaseExtractor):
     """Extract [CLS] embedding feature from any untrained bert-like models"""
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-    def __init__(self, model_name: str, max_length: int = 512, batch_size=64):
+    def __init__(self, model_name: str, max_length: int = 512, batch_size=64, cache_dir: str = None):
         self.model_name = model_name
         self.max_length = max_length
         self.batch_size = batch_size
 
-        self.model = AutoModel.from_pretrained(self.model_name)
-        self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
+        self.model = AutoModel.from_pretrained(self.model_name, cache_dir=cache_dir)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_name, cache_dir=cache_dir)
 
     @torch.no_grad()
     def generate_features(self, data: pd.Series) -> pd.DataFrame:

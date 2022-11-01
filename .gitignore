@@ -109,3 +109,5 @@ data/raw/*
 catboost_info/
 .idea/
 requirements-dev.txt
+
+checkpoints/

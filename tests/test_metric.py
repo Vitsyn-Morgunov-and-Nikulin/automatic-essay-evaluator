@@ -2,7 +2,7 @@ import numpy as np
 import torch
 from sklearn.metrics import mean_squared_error
 
-from src.model_finetuning.metric import MCRMSELoss
+from src.model_finetuning.losses import MCRMSELoss
 
 
 def test_sklearn_metric_matches_torch():

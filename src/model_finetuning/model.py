@@ -9,7 +9,7 @@ from torch.optim.lr_scheduler import CosineAnnealingLR
 from transformers import AutoConfig, AutoModel, AutoTokenizer
 
 from src.data_reader import load_train_test_df
-from src.model_finetuning.metric import MCRMSELoss
+from src.model_finetuning.losses import MCRMSELoss
 
 
 def num_train_samples():

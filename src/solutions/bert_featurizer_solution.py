@@ -119,7 +119,7 @@ def main():
     train_x, train_y = train_df[x_columns], train_df.drop(columns=['full_text'])
 
     predictor = BertWithHandcraftedFeaturePredictor(config)
-    cv = CrossValidation(saving_dir=saving_dir, n_splits=config['n_splits'])
+    cv = CrossValidation(saving_dir=str(saving_dir), n_splits=config['n_splits'])
 
     results = cv.fit(predictor, train_x, train_y)
     print("CV results")

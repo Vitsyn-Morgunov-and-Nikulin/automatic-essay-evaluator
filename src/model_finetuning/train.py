@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import pandas as pd
@@ -11,7 +12,7 @@ from sklearn.model_selection import train_test_split
 from src.data_reader import load_train_test_df
 from src.model_finetuning.config import CONFIG
 from src.model_finetuning.dataloader import ClassificationDataloader
-from src.model_finetuning.metric import MCRMSELoss
+from src.model_finetuning.losses import MCRMSELoss
 from src.model_finetuning.model import BertLightningModel
 from src.utils import get_target_columns, seed_everything
 
@@ -42,7 +43,7 @@ def train(
         entity="parmezano",
         config=config,
         log_model='all',
-        group="train_deberta_model",
+        group=os.environ['GROUP_NAME'],
     )
     wandb.run.log_code(".")
     wandb.watch(model, criterion=MCRMSELoss())

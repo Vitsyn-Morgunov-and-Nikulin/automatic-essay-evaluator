@@ -15,7 +15,9 @@ from src.utils import validate_x, validate_y
 class CrossValidation:
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-    def __init__(self, saving_dir: Path, n_splits: int = 5):
+    def __init__(self, saving_dir: str, n_splits: int = 5):
+        saving_dir = Path(saving_dir)
+
         self.k_fold = KFold(n_splits=n_splits)
         self.metric = MSEMetric()
 

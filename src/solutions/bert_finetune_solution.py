@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 from typing import Union
 
@@ -12,9 +13,12 @@ from src.model_finetuning.config import CONFIG
 from src.model_finetuning.model import BertLightningModel
 from src.model_finetuning.train import predict, train
 from src.solutions.base_solution import BaseSolution
-from src.utils import get_x_columns
+from src.utils import get_random_string, get_x_columns
 
 logging.set_verbosity_error()
+
+
+os.environ['GROUP_NAME'] = 'train_deberta_model-' + get_random_string(6)
 
 
 class BertFinetuningSolution(BaseSolution):
@@ -65,7 +69,7 @@ def main():
     train_x, train_y = train_df[x_columns], train_df.drop(columns=['full_text'])
 
     predictor = BertFinetuningSolution(config)
-    cv = CrossValidation(saving_dir=saving_dir, n_splits=config['num_cross_val_splits'])
+    cv = CrossValidation(saving_dir=str(saving_dir), n_splits=config['num_cross_val_splits'])
 
     results = cv.fit(predictor, train_x, train_y)
     print(f"CV metric: {results.iloc[len(results) - 1].mean()}")
@@ -79,7 +83,7 @@ def main():
     wandb.init(
         project="automated_essay_evaluator",
         entity="parmezano",
-        group="train_deberta_model",
+        group=os.environ['GROUP_NAME'],
         name='weights_cv'
     )
     art = wandb.Artifact("bert-finetune-solution", type="model")

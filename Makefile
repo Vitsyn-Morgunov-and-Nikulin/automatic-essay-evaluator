@@ -10,4 +10,4 @@ download_data:
 test:
 	flake8
 	isort .
-	pytest
+	pytest  -p no:cacheprovider

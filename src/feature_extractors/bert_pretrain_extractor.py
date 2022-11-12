@@ -1,3 +1,5 @@
+from typing import List
+
 import pandas as pd
 import torch
 from tqdm import trange
@@ -10,13 +12,13 @@ class BertPretrainFeatureExtractor(BaseExtractor):
     """Extract [CLS] embedding feature from any untrained bert-like models"""
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-    def __init__(self, model_name: str, max_length: int = 512, batch_size=64):
+    def __init__(self, model_name: str, max_length: int = 512, batch_size=64, cache_dir: str = None):
         self.model_name = model_name
         self.max_length = max_length
         self.batch_size = batch_size
 
-        self.model = AutoModel.from_pretrained(self.model_name)
-        self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
+        self.model = AutoModel.from_pretrained(self.model_name, cache_dir=cache_dir)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_name, cache_dir=cache_dir)
 
     @torch.no_grad()
     def generate_features(self, data: pd.Series) -> pd.DataFrame:
@@ -26,6 +28,7 @@ class BertPretrainFeatureExtractor(BaseExtractor):
         :param data: Series with full_text column
         :return: Dataframe, that have index - id's from data, and columns - bert features
         """
+        torch.cuda.empty_cache()
 
         texts = data.tolist()
         self.model = self.model.to(self.device)
@@ -51,9 +54,29 @@ class BertPretrainFeatureExtractor(BaseExtractor):
 
         self.model = self.model.to("cpu")
         classification_outputs = torch.cat(classification_outputs, dim=0)
+        torch.cuda.empty_cache()
         column_names = [f"{self.model_name}_feat_{ii}" for ii in range(len(classification_outputs[0]))]
         return pd.DataFrame(
             data=classification_outputs.tolist(),
             index=data.index,
             columns=column_names
         )
+
+
+class ManyBertPretrainFeatureExtractor(BaseExtractor):
+    def __init__(self, model_names: List[str], max_length: int = 512, batch_size=64):
+        super(ManyBertPretrainFeatureExtractor, self).__init__()
+        self.model_names = model_names
+        self.max_length = max_length
+        self.batch_size = batch_size
+
+    def generate_features(self, X: pd.Series) -> pd.DataFrame:
+        extractors = [
+            BertPretrainFeatureExtractor(model_name, self.max_length, self.batch_size)
+            for model_name in self.model_names
+        ]
+        dataframes = [
+            extractor.generate_features(X) for extractor in extractors
+        ]
+
+        return pd.concat(dataframes, axis='columns')

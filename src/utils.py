@@ -1,5 +1,6 @@
 import os
 import random
+import string
 from typing import List
 
 import numpy as np
@@ -48,3 +49,10 @@ def validate_y(y: pd.DataFrame) -> None:
     if len(columns) != 7 or any(col not in y_needed_columns for col in columns):
         print(y)
         raise RuntimeError(f"y has incorrect columns: it should contain only {y_needed_columns}")
+
+
+def get_random_string(length) -> str:
+    # choose from all lowercase letter
+    letters = string.ascii_lowercase
+    result_str = ''.join(random.choice(letters) for _ in range(length))
+    return result_str

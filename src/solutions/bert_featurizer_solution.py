@@ -50,7 +50,7 @@ class BertWithHandcraftedFeaturePredictor(BaseSolution):
 
         return features_df
 
-    def fit(self, X: pd.DataFrame, y: pd.DataFrame) -> None:
+    def fit(self, X: pd.DataFrame, y: pd.DataFrame, **kwargs) -> None:
         validate_x(X)
         validate_y(y)
 
@@ -107,6 +107,8 @@ def main():
         'n_splits': 5,
         'saving_dir': 'checkpoints/BertWithHandcraftedFeaturePredictor',
     }
+    saving_dir = Path("checkpoints/bert_featurizer_solution")
+    saving_dir.mkdir(exist_ok=True, parents=True)
 
     train_df, test_df = load_train_test_df()
     # train_df = train_df.iloc[:10]
@@ -115,7 +117,7 @@ def main():
     train_x, train_y = train_df[x_columns], train_df.drop(columns=['full_text'])
 
     predictor = BertWithHandcraftedFeaturePredictor(config)
-    cv = CrossValidation(n_splits=config['n_splits'])
+    cv = CrossValidation(saving_dir=str(saving_dir), n_splits=config['n_splits'])
 
     results = cv.fit(predictor, train_x, train_y)
     print("CV results")

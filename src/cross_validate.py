@@ -1,6 +1,6 @@
 from copy import deepcopy
 from pathlib import Path
-from typing import List, Union
+from typing import Optional, Union
 
 import numpy as np
 import pandas as pd
@@ -13,12 +13,18 @@ from src.utils import validate_x, validate_y
 
 
 class CrossValidation:
-    models: List[BaseSolution] = []
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-    def __init__(self, n_splits: int = 5):
+    def __init__(self, saving_dir: str, n_splits: int = 5):
+        saving_dir = Path(saving_dir)
+
         self.k_fold = KFold(n_splits=n_splits)
         self.metric = MSEMetric()
+
+        if not saving_dir.is_dir():
+            saving_dir.mkdir(exist_ok=True)
+        self.saving_dir = saving_dir
+        self.base_solution: Optional[BaseSolution] = None
 
     def fit(self, model: BaseSolution, X: pd.DataFrame, y: pd.DataFrame) -> pd.DataFrame:
         """Makes average fold prediction
@@ -33,20 +39,22 @@ class CrossValidation:
         validate_y(y)
 
         scores = []
-
+        self.base_solution = model
         for ii, (train_ind, test_ind) in enumerate(self.k_fold.split(X)):
             print(f"Training fold={ii}...")
             X_train, X_test = X.iloc[train_ind], X.iloc[test_ind]
             y_train, y_test = y.iloc[train_ind], y.iloc[test_ind]
 
             training_model = deepcopy(model)
-            training_model.fit(X_train, y_train)
+            training_model.fit(X_train, y_train, val_X=X_test, val_y=y_test, fold=ii)
 
             y_pred = training_model.predict(X_test)
             class_rmse = self.metric.evaluate_class_rmse(y_pred, y_test)
             scores.append(class_rmse)
 
-            self.models.append(training_model)
+            training_model.save(self.saving_dir / f"cv_fold_{ii}")
+
+            del training_model
 
         scores = pd.DataFrame(scores)
         mean_values = [scores.mean(axis='rows').values.tolist()]
@@ -61,12 +69,16 @@ class CrossValidation:
         :param X: Dataframe that have text_id and full_text columns
         :return: prediction Dataframe that have text_id, cohesion, ... columns
         """
-        assert self.models is not [], "Cross validation is not trained yet"
+        assert list(self.saving_dir.iterdir()) is not [], "Cross validation is not trained yet"
 
         validate_x(X)
 
         predictions = []
-        for model in self.models:
+        for ii in range(self.k_fold.n_splits):
+            model_path = self.saving_dir / f"cv_fold_{ii}"
+
+            model = deepcopy(self.base_solution)
+            model.load(model_path)
             pred = model.predict(X)
             predictions.append(pred)
 

@@ -10,7 +10,7 @@ class BaseSolution:
     def __init__(self, config: Optional[dict] = None):
         pass
 
-    def fit(self, X: pd.DataFrame, y: pd.DataFrame):
+    def fit(self, X: pd.DataFrame, y: pd.DataFrame, **kwargs):
         raise NotImplementedError(f"Abstract class {type(self).__name__} is used")
 
     def predict(self, X: pd.DataFrame) -> pd.DataFrame:

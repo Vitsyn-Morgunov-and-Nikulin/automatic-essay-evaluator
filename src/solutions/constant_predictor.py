@@ -13,7 +13,7 @@ class ConstantPredictorSolution(BaseSolution):
     def __init__(self):
         super().__init__()
 
-    def fit(self, X: pd.DataFrame, y: pd.DataFrame) -> None:
+    def fit(self, X: pd.DataFrame, y: pd.DataFrame, **kwargs) -> None:
         pass
 
     def predict(self, X: pd.DataFrame) -> pd.DataFrame:

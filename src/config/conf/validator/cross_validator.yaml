@@ -1,0 +1,3 @@
+_target_: src.cross_validate.CrossValidation
+saving_dir: checkpoints/BertWithHandcraftedFeaturePredictor
+n_splits: 5

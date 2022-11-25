@@ -1,0 +1,12 @@
+# @package _global_
+
+name: sanity checking of BertWithHandcraftedFeaturePredictor
+
+defaults:
+  - override /predictor: bert_with_handcrafted_feature_predictor
+
+validator:
+  saving_dir: checkpoints/BertWithHandcraftedFeaturePredictor
+
+predictor:
+  catboost_iter: 5

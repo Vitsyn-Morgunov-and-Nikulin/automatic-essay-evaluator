@@ -1,0 +1,15 @@
+# @package _global_
+
+name: sanity checking of ManyBertWithHandcraftedFeaturePredictor
+
+defaults:
+  - override /predictor: many_bert_with_handcrafted_feature_predictor
+
+validator:
+  saving_dir: checkpoints/ManyBertWithHandcraftedFeaturePredictor
+
+predictor:
+  model_names:
+    - bert-base-uncased
+    - bert-base-cased
+  catboost_iter: 5

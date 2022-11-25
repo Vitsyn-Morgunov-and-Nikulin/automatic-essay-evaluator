@@ -21,12 +21,45 @@ logging.set_verbosity_error()
 os.environ['GROUP_NAME'] = 'train_deberta_model-' + get_random_string(6)
 
 
-class BertFinetuningSolution(BaseSolution):
+class BertFinetuningPredictor(BaseSolution):
     model = None
 
-    def __init__(self, config: dict):
-        super(BertFinetuningSolution, self).__init__()
-        self.config = config
+    def __init__(
+        self,
+        model_name="microsoft/deberta-v3-large",
+        num_classes=6,
+        lr=2e-5,
+        batch_size=8,
+        num_workers=8,
+        max_length=512,
+        weight_decay=0.01,
+        accelerator='gpu',
+        max_epochs=5,
+        accumulate_grad_batches=4,
+        precision=16,
+        gradient_clip_val=1000,
+        train_size=0.8,
+        num_cross_val_splits=5,
+        num_frozen_layers=20,
+    ):
+        super(BertFinetuningPredictor, self).__init__()
+        self.config = dict(
+            model_name=model_name,
+            num_classes=num_classes,
+            lr=lr,
+            batch_size=batch_size,
+            num_workers=num_workers,
+            max_length=max_length,
+            weight_decay=weight_decay,
+            accelerator=accelerator,
+            max_epochs=max_epochs,
+            accumulate_grad_batches=accumulate_grad_batches,
+            precision=precision,
+            gradient_clip_val=gradient_clip_val,
+            train_size=train_size,
+            num_cross_val_splits=num_cross_val_splits,
+            num_frozen_layers=num_frozen_layers,
+        )
 
     def fit(self, X: pd.DataFrame, y: pd.DataFrame, **kwargs):
         train_df = pd.concat([X, y], axis='columns')
@@ -49,7 +82,7 @@ class BertFinetuningSolution(BaseSolution):
 
         trainer = pl.Trainer(accelerator=self.config['accelerator'])
         trainer.model = self.model
-        trainer.save_checkpoint(directory / "lightning_model.ckpt", weights_only=True)
+        # trainer.save_checkpoint(directory / "lightning_model.ckpt", weights_only=True)
 
     def load(self, directory: Union[str, Path]) -> None:
         filepath = Path(directory) / "lightning_model.ckpt"
@@ -68,7 +101,7 @@ def main():
     x_columns = get_x_columns()
     train_x, train_y = train_df[x_columns], train_df.drop(columns=['full_text'])
 
-    predictor = BertFinetuningSolution(config)
+    predictor = BertFinetuningPredictor(config)
     cv = CrossValidation(saving_dir=str(saving_dir), n_splits=config['num_cross_val_splits'])
 
     results = cv.fit(predictor, train_x, train_y)

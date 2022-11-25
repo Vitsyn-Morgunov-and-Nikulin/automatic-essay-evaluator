@@ -1,6 +1,9 @@
 # Automated Essay Evaluator
 
-**Authors:** Shamil Arslanov, Maxim Faleev, Danis Alukaev  
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/e900ed98717c4c61b7dff288a075c6e8)](https://www.codacy.com/gh/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator&amp;utm_campaign=Badge_Grade)
+[![CI/CD master](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/actions/workflows/ci.yaml/badge.svg)](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/actions/workflows/ci.yaml)
+
+**Authors:** Shamil Arslanov, Maxim Faleev, Danis Alukaev
 **Group:** B19-DS-01, Innopolis University
 
 ## 📝 Motivation
@@ -23,7 +26,7 @@ We will use the ELLIPSE corpus provided by Vanderbilt University and The Learnin
 
 ## 👤 Target audience
 
-Our solution will help teachers speed up the review of students' essays. Also, it will help foreigners to identify gaps in learning English, e.g. if identifies that the essay has poor grammar, then the student needs to be given more exercise in the field, and the same with vocabulary, syntax, etc. 
+Our solution will help teachers speed up the review of students' essays. Also, it will help foreigners to identify gaps in learning English, e.g. if identifies that the essay has poor grammar, then the student needs to be given more exercise in the field, and the same with vocabulary, syntax, etc.
 
 ## ✏️ What is expected from the resulting model
 
@@ -37,6 +40,6 @@ We put a significant effort to (partially) automate routine operations and restr
 - [Configurable experiments](src/config/conf/) via Hydra that keeps our studies clean and structured;
 - [Syncing experiments](src/model_finetuning/train.py) in [Weights & Biases](https://wandb.ai/site) that helps us to monitor progress of our experiments;
 - [Automate building of dataset](Makefile) via Makefile;
-- [Evaluation via cross-validation](src/cross_validate.py) that is cosidered to be the most objective amid possible ways to assess generalization of a model; 
+- [Evaluation via cross-validation](src/cross_validate.py) that is cosidered to be the most objective amid possible ways to assess generalization of a model;
 - [Reproducible experimentation](src/utils.py) that guarantees that same set-up will give equal results on different machines;
 - [Notifications in Telegram](src/utils.py) when training is completed.

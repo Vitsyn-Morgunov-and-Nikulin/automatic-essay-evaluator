@@ -2,7 +2,7 @@ import hydra
 import os
 from omegaconf import DictConfig, OmegaConf
 from hydra.utils import instantiate
-from src.utils import seed_everything, get_x_columns
+from src.utils import seed_everything, get_x_columns, report_to_telegram
 from transformers import logging as transformer_log
 from src.data_reader import load_train_test_df
 
@@ -21,8 +21,9 @@ def main(cfg: DictConfig):
     results = validator.fit(predictor, train_x, train_y)
     print("CV results")
     print(results)
-
-    print(f"CV mean: {results.iloc[len(results) - 1].mean()}")
+    
+    cv_mean = results.iloc[len(results) - 1].mean()
+    print(f"CV mean: {cv_mean}")
 
     submission_df = validator.predict(test_df)
     submission_path = os.path.join(validator.saving_dir, "submission.csv")
@@ -30,6 +31,8 @@ def main(cfg: DictConfig):
 
     cv_results_path = os.path.join(validator.saving_dir, "cv_results.csv")
     results.to_csv(cv_results_path)
+
+    report_to_telegram(cfg=cfg, metric=cv_mean)
 
 
 if __name__ == "__main__":

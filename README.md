@@ -38,4 +38,5 @@ We put a significant effort to (partially) automate routine operations and restr
 - [Syncing experiments](src/model_finetuning/train.py) in [Weights & Biases](https://wandb.ai/site) that helps us to monitor progress of our experiments;
 - [Automate building of dataset](Makefile) via Makefile;
 - [Evaluation via cross-validation](src/cross_validate.py) that is cosidered to be the most objective amid possible ways to assess generalization of a model; 
-- [Reproducible experimentation](src/utils.py) that guarantees that same set-up will give equal results on different machines.
+- [Reproducible experimentation](src/utils.py) that guarantees that same set-up will give equal results on different machines;
+- [Notifications in Telegram](src/utils.py) when training is completed.

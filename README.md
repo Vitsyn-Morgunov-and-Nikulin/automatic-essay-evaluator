@@ -44,5 +44,5 @@ We put a significant effort to (partially) automate routine operations and restr
 - [Evaluation via cross-validation](src/cross_validate.py) that is cosidered to be the most objective amid possible ways to assess generalization of a model;
 - [Reproducible experimentation](src/utils.py) that guarantees that same set-up will give equal results on different machines;
 - [Notifications in Telegram](src/utils.py) when training is completed;
-- [Badges] with codecov, codacy, and continuous integration.
+- Badges with codecov, codacy, and continuous integration.
 

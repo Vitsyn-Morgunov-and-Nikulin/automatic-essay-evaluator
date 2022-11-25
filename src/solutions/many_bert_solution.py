@@ -1,9 +1,11 @@
 import os
 from pathlib import Path
 from typing import Union
+
 import pandas as pd
 import torch.cuda
 from catboost import CatBoostRegressor
+from catboost.utils import get_gpu_device_count
 
 from src.cross_validate import CrossValidation
 from src.feature_extractors.bert_pretrain_extractor import \
@@ -16,7 +18,6 @@ from src.spell_checker import SmartSpellChecker
 from src.text_preprocessings.spellcheck_preprocessing import \
     SpellcheckTextPreprocessor
 from src.utils import get_x_columns, seed_everything, validate_x, validate_y
-from catboost.utils import get_gpu_device_count
 
 seed_everything()
 
@@ -26,7 +27,7 @@ spellcheck = SmartSpellChecker()
 class ManyBertWithHandcraftedFeaturePredictor(BaseSolution):
 
     def __init__(
-        self, 
+        self,
         model_names: list,
         catboost_iter: int,
         saving_dir: str,
@@ -45,7 +46,7 @@ class ManyBertWithHandcraftedFeaturePredictor(BaseSolution):
         self.models = [
             CatBoostRegressor(
                 iterations=catboost_iter,
-                task_type=self.task_type, 
+                task_type=self.task_type,
                 verbose=True,
             ) for _ in range(len(self.columns))
         ]
@@ -110,7 +111,7 @@ class ManyBertWithHandcraftedFeaturePredictor(BaseSolution):
 
 def main():
     config = dict(
-        model_names = [
+        model_names=[
             'bert-base-uncased',
             'bert-base-cased',
             'vblagoje/bert-english-uncased-finetuned-pos',
@@ -118,9 +119,9 @@ def main():
             'unitary/toxic-bert',
             'bert-large-uncased'
         ],
-        catboost_iter = 5000,
-        n_splits = 5,
-        saving_dir = 'checkpoints/ManyBertWithHandcraftedFeaturePredictor',
+        catboost_iter=5000,
+        n_splits=5,
+        saving_dir='checkpoints/ManyBertWithHandcraftedFeaturePredictor',
     )
 
     train_df, test_df = load_train_test_df()

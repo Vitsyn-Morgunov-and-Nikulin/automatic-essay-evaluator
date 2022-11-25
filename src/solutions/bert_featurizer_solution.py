@@ -4,6 +4,7 @@ from typing import Union
 import pandas as pd
 import torch.cuda
 from catboost import CatBoostRegressor
+from transformers import logging as transformers_logging
 
 from src.cross_validate import CrossValidation
 from src.feature_extractors.bert_pretrain_extractor import \
@@ -17,7 +18,6 @@ from src.text_preprocessings.spellcheck_preprocessing import \
     SpellcheckTextPreprocessor
 from src.utils import get_x_columns, seed_everything, validate_x, validate_y
 
-from transformers import logging as transformers_logging
 transformers_logging.set_verbosity_error()
 
 seed_everything()
@@ -45,7 +45,7 @@ class BertWithHandcraftedFeaturePredictor(BaseSolution):
         self.models = [
             CatBoostRegressor(
                 iterations=catboost_iter,
-                task_type="CPU", # self.device,
+                task_type="CPU",  # self.device,
                 verbose=True,
             ) for _ in range(len(self.columns))
         ]
@@ -56,7 +56,7 @@ class BertWithHandcraftedFeaturePredictor(BaseSolution):
         bert_features = self.bert.generate_features(X)
         # handcrafted_features = self.feature_extractor.generate_features(X)
         # features_df = pd.concat([bert_features, handcrafted_features], axis='columns')
-        
+
         features_df = bert_features
 
         return features_df
@@ -128,9 +128,9 @@ def main():
     train_x, train_y = train_df[x_columns], train_df.drop(columns=['full_text'])
 
     predictor = BertWithHandcraftedFeaturePredictor(
-        model_name = 'bert-base-uncased',
-        catboost_iter = 5000,
-        saving_dir = 'checkpoints/BertWithHandcraftedFeaturePredictor'
+        model_name='bert-base-uncased',
+        catboost_iter=5000,
+        saving_dir='checkpoints/BertWithHandcraftedFeaturePredictor'
     )
     cv = CrossValidation(saving_dir=str(saving_dir), n_splits=config['n_splits'])
 

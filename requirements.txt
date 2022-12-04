@@ -37,3 +37,7 @@ scikit-learn==1.0.2
 wandb
 easydict
 nltk==3.7
+
+streamlit
+pytorch-lightning
+seaborn

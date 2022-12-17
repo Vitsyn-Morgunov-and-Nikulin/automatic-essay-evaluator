@@ -48,13 +48,12 @@ We put a significant effort to (partially) automate routine operations and restr
 ## 💻 Contributors <a name="contributors"></a>
 **Shamil Arslanov** <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Email: <a>s.arslanov@innopolis.university</a> <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GitHub: <a href="https://github.com/homomorfism">@homomorfism</a> <br>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GitHub: <a href="https://github.com/homomorfism">@homomorfism</a> <br>
 
 **Maxim Faleev** <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Email: <a>m.faleev@innopolis.university</a> <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GitHub: <a href="https://github.com/implausibleDeniability">@implausibleDeniability</a> <br>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GitHub: <a href="https://github.com/implausibleDeniability">@implausibleDeniability</a> <br>
 
 **Danis Alukaev** <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Email: <a>d.alukaev@innopolis.university</a> <br>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GitHub: <a href="https://github.com/DanisAlukaev">@DanisAlukaev</a> <br>    
-
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GitHub: <a href="https://github.com/DanisAlukaev">@DanisAlukaev</a> <br>

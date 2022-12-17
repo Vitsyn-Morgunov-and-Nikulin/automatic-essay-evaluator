@@ -11,7 +11,6 @@
 [![CI/CD master](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/actions/workflows/ci.yaml/badge.svg)](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/actions/workflows/ci.yaml)
 [![Kaggle master](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/actions/workflows/kaggle.yaml/badge.svg)](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/actions/workflows/kaggle.yaml)
 
-
 <details>
   <summary>Table of Contents</summary>
   <ol>
@@ -22,7 +21,6 @@
 </details>
 
 <br>
-
 
 ## 📝 About the project <a name="motivation"></a>
 

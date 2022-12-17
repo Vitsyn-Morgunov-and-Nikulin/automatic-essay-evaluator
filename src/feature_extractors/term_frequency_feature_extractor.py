@@ -47,13 +47,13 @@ class TermFrequencyFeatureExtractor(BaseExtractor):
         term2freq.update(term_frequencies.set_index("word").to_dict()["count"])
         return term2freq
 
-    def generate_features(self, texts: pd.Series) -> pd.DataFrame:
+    def generate_features(self, data: pd.Series) -> pd.DataFrame:
         """Extracts features from the text in the form of histogram of word frequencies
 
         Logarithm operation is applied to the frequencies for the sake of distribution
         normality.
         """
-        feature_df = texts.apply(self._compute_word_frequency_histogram)
+        feature_df = data.apply(self._compute_word_frequency_histogram)
         feature_df.columns = self.feature_names
         return feature_df
 

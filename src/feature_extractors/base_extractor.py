@@ -3,7 +3,7 @@ import pandas as pd
 
 class BaseExtractor:
 
-    def generate_features(self, X: pd.Series) -> pd.DataFrame:
+    def generate_features(self, data: pd.Series) -> pd.DataFrame:
         """Generates features for model
 
         :param X: Series, that contains texts

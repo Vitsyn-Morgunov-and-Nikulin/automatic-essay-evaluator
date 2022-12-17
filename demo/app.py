@@ -1,7 +1,9 @@
-import streamlit as st
-import seaborn as sns
-from demo.utils import load_model, process_text
 import re
+
+import seaborn as sns
+import streamlit as st
+
+from demo.utils import load_model, process_text
 
 st.set_page_config(
     page_title="BERT Keyword Extractor",
@@ -10,14 +12,14 @@ st.set_page_config(
 
 
 def _max_width_():
-    max_width_str = f"max-width: 1400px;"
+    max_width_str = "max-width: 1400px;"
     st.markdown(
         f"""
     <style>
     .reportview-container .main .block-container{{
         {max_width_str}
     }}
-    </style>    
+    </style>
     """,
         unsafe_allow_html=True,
     )

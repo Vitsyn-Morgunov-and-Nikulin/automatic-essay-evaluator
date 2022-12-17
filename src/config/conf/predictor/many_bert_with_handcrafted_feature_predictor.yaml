@@ -1,0 +1,10 @@
+_target_: src.solutions.many_bert_solution.ManyBertWithHandcraftedFeaturePredictor
+model_names:
+  - bert-base-uncased
+  - bert-base-cased
+  - vblagoje/bert-english-uncased-finetuned-pos
+  - bert-base-multilingual-cased
+  - unitary/toxic-bert
+  - bert-large-uncased
+catboost_iter: 500
+saving_dir: checkpoints/ManyBertWithHandcraftedFeaturePredictor

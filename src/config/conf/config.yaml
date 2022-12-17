@@ -1,0 +1,8 @@
+defaults:
+  - predictor: bert_with_handcrafted_feature_predictor
+  - validator: cross_validator
+  - _self_
+
+hydra:
+  job:
+    chdir: True

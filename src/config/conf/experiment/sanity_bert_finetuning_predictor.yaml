@@ -1,0 +1,19 @@
+# @package _global_
+
+name: sanity checking of BertFinetuningPredictor
+
+defaults:
+  - override /predictor: bert_finetuning_predictor
+
+validator:
+  saving_dir: checkpoints/BertFinetuningPredictor
+
+predictor:
+  batch_size: 8
+  num_workers: 8
+  max_length: 64
+  weight_decay: 0.01
+  accelerator: gpu
+  max_epochs: 2
+  train_size: 0.8
+  num_cross_val_splits: 5

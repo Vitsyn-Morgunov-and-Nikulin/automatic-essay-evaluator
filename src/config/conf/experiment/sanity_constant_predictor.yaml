@@ -1,0 +1,9 @@
+# @package _global_
+
+name: sanity checking of ConstantPredictorSolution
+
+defaults:
+  - override /predictor: constant_predictor
+
+validator:
+  saving_dir: checkpoints/ConstantPredictor

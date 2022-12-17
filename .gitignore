@@ -110,4 +110,7 @@ catboost_info/
 .idea/
 requirements-dev.txt
 
+# logging
 checkpoints/
+# hydra-outputs
+outputs/

@@ -5,6 +5,7 @@ from typing import Union
 import pandas as pd
 import torch.cuda
 from catboost import CatBoostRegressor
+from catboost.utils import get_gpu_device_count
 
 from src.cross_validate import CrossValidation
 from src.feature_extractors.bert_pretrain_extractor import \
@@ -24,22 +25,29 @@ spellcheck = SmartSpellChecker()
 
 
 class ManyBertWithHandcraftedFeaturePredictor(BaseSolution):
-    device = 'GPU' if torch.cuda.is_available() else None
 
-    def __init__(self, config: dict):
+    def __init__(
+        self,
+        model_names: list,
+        catboost_iter: int,
+        saving_dir: str,
+    ):
         super(ManyBertWithHandcraftedFeaturePredictor, self).__init__()
 
         self.feature_extractor = HandcraftedTextFeatureExtractor(spellcheck)
         self.text_preprocessing = SpellcheckTextPreprocessor(spellcheck)
-        self.berts = ManyBertPretrainFeatureExtractor(model_names=config['model_names'])
+        self.berts = ManyBertPretrainFeatureExtractor(model_names=model_names)
+
+        self.device = 'GPU' if torch.cuda.is_available() else None
+        self.task_type = 'GPU' if get_gpu_device_count() > 0 else 'CPU'
 
         # classification model for each column
         self.columns = ['cohesion', 'syntax', 'vocabulary', 'phraseology', 'grammar', 'conventions']
         self.models = [
             CatBoostRegressor(
-                iterations=config['catboost_iter'],
-                task_type=self.device,
-                verbose=False,
+                iterations=catboost_iter,
+                task_type=self.task_type,
+                verbose=True,
             ) for _ in range(len(self.columns))
         ]
 
@@ -48,10 +56,9 @@ class ManyBertWithHandcraftedFeaturePredictor(BaseSolution):
         bert_features = self.berts.generate_features(cleaned_text)
         handcrafted_features = self.feature_extractor.generate_features(X)
         features_df = pd.concat([bert_features, handcrafted_features], axis='columns')
-
         return features_df
 
-    def fit(self, X: pd.DataFrame, y: pd.DataFrame) -> None:
+    def fit(self, X: pd.DataFrame, y: pd.DataFrame, **kwargs) -> None:
         validate_x(X)
         validate_y(y)
 
@@ -103,8 +110,8 @@ class ManyBertWithHandcraftedFeaturePredictor(BaseSolution):
 
 
 def main():
-    config = {
-        'model_names': [
+    config = dict(
+        model_names=[
             'bert-base-uncased',
             'bert-base-cased',
             'vblagoje/bert-english-uncased-finetuned-pos',
@@ -112,18 +119,18 @@ def main():
             'unitary/toxic-bert',
             'bert-large-uncased'
         ],
-        'catboost_iter': 5000,
-        'n_splits': 5,
-        'saving_dir': 'checkpoints/ManyBert',
-    }
+        catboost_iter=5000,
+        n_splits=5,
+        saving_dir='checkpoints/ManyBertWithHandcraftedFeaturePredictor',
+    )
 
     train_df, test_df = load_train_test_df()
 
     x_columns = get_x_columns()
     train_x, train_y = train_df[x_columns], train_df.drop(columns=['full_text'])
 
-    predictor = ManyBertWithHandcraftedFeaturePredictor(config)
-    cv = CrossValidation(n_splits=config['n_splits'])
+    predictor = ManyBertWithHandcraftedFeaturePredictor(**config)
+    cv = CrossValidation(saving_dir=config['saving_dir'], n_splits=config['n_splits'])
 
     results = cv.fit(predictor, train_x, train_y)
     print("CV results")

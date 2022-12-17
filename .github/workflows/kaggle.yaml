@@ -2,7 +2,7 @@ name: kaggle-submission
 
 on:
   pull_request:
-    branches: 
+    branches:
       - main
     types: [closed]
 
@@ -24,6 +24,6 @@ jobs:
       - name: Authenticate to Kaggle
         run: |
           mkdir ~/.kaggle
-          echo ${{ secrets.KAGGLE }} >> ~/.kaggle/kaggle.json 
+          echo ${{ secrets.KAGGLE }} >> ~/.kaggle/kaggle.json
       - name: Push kernel
         run: kaggle kernels push -p src/

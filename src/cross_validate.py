@@ -22,7 +22,7 @@ class CrossValidation:
         self.metric = MSEMetric()
 
         if not saving_dir.is_dir():
-            saving_dir.mkdir(exist_ok=True)
+            saving_dir.mkdir(exist_ok=True, parents=True)
         self.saving_dir = saving_dir
         self.base_solution: Optional[BaseSolution] = None
 
@@ -96,8 +96,6 @@ class CrossValidation:
         return X
 
     def save(self, path: Union[str, Path]):
-        assert self.models is not [], "Models should be trained before saving them"
-
         path = Path(path)
         if not path.is_dir():
             path.mkdir(parents=True)

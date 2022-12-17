@@ -4,6 +4,7 @@ from typing import Union
 import pandas as pd
 import torch.cuda
 from catboost import CatBoostRegressor
+from transformers import logging as transformers_logging
 
 from src.cross_validate import CrossValidation
 from src.feature_extractors.bert_pretrain_extractor import \
@@ -17,6 +18,8 @@ from src.text_preprocessings.spellcheck_preprocessing import \
     SpellcheckTextPreprocessor
 from src.utils import get_x_columns, seed_everything, validate_x, validate_y
 
+transformers_logging.set_verbosity_error()
+
 seed_everything()
 
 spellcheck = SmartSpellChecker()
@@ -25,28 +28,36 @@ spellcheck = SmartSpellChecker()
 class BertWithHandcraftedFeaturePredictor(BaseSolution):
     device = 'GPU' if torch.cuda.is_available() else None
 
-    def __init__(self, config: dict):
+    def __init__(
+        self,
+        model_name: str,
+        catboost_iter: int,
+        saving_dir: str
+    ):
         super(BertWithHandcraftedFeaturePredictor, self).__init__()
 
         self.feature_extractor = HandcraftedTextFeatureExtractor(spellcheck)
         self.text_preprocessing = SpellcheckTextPreprocessor(spellcheck)
-        self.bert = BertPretrainFeatureExtractor(model_name=config['model_name'], cache_dir=config['saving_dir'])
+        self.bert = BertPretrainFeatureExtractor(model_name=model_name)
 
         # classification model for each column
         self.columns = ['cohesion', 'syntax', 'vocabulary', 'phraseology', 'grammar', 'conventions']
         self.models = [
             CatBoostRegressor(
-                iterations=config['catboost_iter'],
-                task_type=self.device,
-                verbose=False,
+                iterations=catboost_iter,
+                task_type="CPU",  # self.device,
+                verbose=True,
             ) for _ in range(len(self.columns))
         ]
 
     def transform_data(self, X: pd.Series) -> pd.DataFrame:
-        cleaned_text = self.text_preprocessing.preprocess_data(X)
-        bert_features = self.bert.generate_features(cleaned_text)
-        handcrafted_features = self.feature_extractor.generate_features(X)
-        features_df = pd.concat([bert_features, handcrafted_features], axis='columns')
+        # cleaned_text = self.text_preprocessing.preprocess_data(X)
+        # bert_features = self.bert.generate_features(cleaned_text)
+        bert_features = self.bert.generate_features(X)
+        # handcrafted_features = self.feature_extractor.generate_features(X)
+        # features_df = pd.concat([bert_features, handcrafted_features], axis='columns')
+
+        features_df = bert_features
 
         return features_df
 
@@ -116,7 +127,11 @@ def main():
     x_columns = get_x_columns()
     train_x, train_y = train_df[x_columns], train_df.drop(columns=['full_text'])
 
-    predictor = BertWithHandcraftedFeaturePredictor(config)
+    predictor = BertWithHandcraftedFeaturePredictor(
+        model_name='bert-base-uncased',
+        catboost_iter=5000,
+        saving_dir='checkpoints/BertWithHandcraftedFeaturePredictor'
+    )
     cv = CrossValidation(saving_dir=str(saving_dir), n_splits=config['n_splits'])
 
     results = cv.fit(predictor, train_x, train_y)

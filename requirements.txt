@@ -38,10 +38,8 @@ transformers==4.22.2
 pyspellchecker==0.7.0
 catboost==1.0.0
 scikit-learn==1.0.2
-wandb
-easydict
+wandb==0.13.7
+easydict==1.10
 nltk==3.7
-
-streamlit
-pytorch-lightning
-seaborn
+streamlit==1.16.0
+seaborn==0.12.1

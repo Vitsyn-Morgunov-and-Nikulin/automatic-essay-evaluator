@@ -47,7 +47,7 @@ def main():
 
     predictor = ConstantPredictorSolution()
 
-    train_data, test_data = train_test_split(train_df, test_size=0.2)
+    _, test_data = train_test_split(train_df, test_size=0.2)
     y_pred = predictor.predict(test_data)
 
     y_true = test_data[['text_id', 'cohesion', 'syntax', 'vocabulary', 'phraseology', 'grammar', 'conventions']]

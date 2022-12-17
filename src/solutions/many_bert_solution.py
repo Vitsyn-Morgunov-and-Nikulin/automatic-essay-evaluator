@@ -6,6 +6,7 @@ import pandas as pd
 import torch.cuda
 from catboost import CatBoostRegressor
 from catboost.utils import get_gpu_device_count
+from easydict import EasyDict as edict
 
 from src.cross_validate import CrossValidation
 from src.feature_extractors.bert_pretrain_extractor import \
@@ -110,18 +111,20 @@ class ManyBertWithHandcraftedFeaturePredictor(BaseSolution):
 
 
 def main():
-    config = dict(
-        model_names=[
-            'bert-base-uncased',
-            'bert-base-cased',
-            'vblagoje/bert-english-uncased-finetuned-pos',
-            'bert-base-multilingual-cased',
-            'unitary/toxic-bert',
-            'bert-large-uncased'
-        ],
-        catboost_iter=5000,
-        n_splits=5,
-        saving_dir='checkpoints/ManyBertWithHandcraftedFeaturePredictor',
+    config = edict(
+        dict(
+            model_names=[
+                'bert-base-uncased',
+                'bert-base-cased',
+                'vblagoje/bert-english-uncased-finetuned-pos',
+                'bert-base-multilingual-cased',
+                'unitary/toxic-bert',
+                'bert-large-uncased'
+            ],
+            catboost_iter=5000,
+            n_splits=5,
+            saving_dir='checkpoints/ManyBertWithHandcraftedFeaturePredictor',
+        )
     )
 
     train_df, test_df = load_train_test_df()
@@ -129,8 +132,12 @@ def main():
     x_columns = get_x_columns()
     train_x, train_y = train_df[x_columns], train_df.drop(columns=['full_text'])
 
-    predictor = ManyBertWithHandcraftedFeaturePredictor(**config)
-    cv = CrossValidation(saving_dir=config['saving_dir'], n_splits=config['n_splits'])
+    predictor = ManyBertWithHandcraftedFeaturePredictor(
+        model_names=config.model_names,
+        catboost_iter=config.catboost_iter,
+        saving_dir=config.saving_dir,
+    )
+    cv = CrossValidation(saving_dir=config.saving_dir, n_splits=config.n_splits)
 
     results = cv.fit(predictor, train_x, train_y)
     print("CV results")
@@ -138,13 +145,13 @@ def main():
 
     print(f"CV mean: {results.iloc[len(results) - 1].mean()}")
 
-    cv.save(config['saving_dir'])
+    cv.save(config.saving_dir)
 
     submission_df = cv.predict(test_df)
-    submission_path = os.path.join(config['saving_dir'], "submission.csv")
+    submission_path = os.path.join(config.saving_dir, "submission.csv")
     submission_df.to_csv(submission_path, index=False)
 
-    cv_results_path = os.path.join(config['saving_dir'], "cv_results.csv")
+    cv_results_path = os.path.join(config.saving_dir, "cv_results.csv")
     results.to_csv(cv_results_path)
 
     print("Finished training!")

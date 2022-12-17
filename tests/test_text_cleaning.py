@@ -5,7 +5,7 @@ from src.text_preprocessings.spellcheck_preprocessing import \
 
 
 def test_text_cleaning():
-    train_df, test_df = load_train_test_df(is_testing=True)
+    train_df, _ = load_train_test_df(is_testing=True)
 
     spellcheck = SmartSpellChecker()
     text_preprocessor = SpellcheckTextPreprocessor(spellcheck)

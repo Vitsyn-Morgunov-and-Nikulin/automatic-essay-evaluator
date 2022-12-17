@@ -23,7 +23,6 @@ def train(
         config: dict,
         train_df: pd.DataFrame,
         val_df: pd.DataFrame,
-        fold: int,
         verbose: bool = False
 ) -> BertLightningModel:
     log_dir = Path("logs/")
@@ -111,7 +110,7 @@ def predict(config: dict, model: BertLightningModel, df: pd.DataFrame) -> pd.Dat
 
 
 def main():
-    train_data, test_data = load_train_test_df()
+    train_data, _ = load_train_test_df()
     train_df, val_df = train_test_split(train_data, train_size=CONFIG['train_size'])
     train(config=CONFIG, train_df=train_df, val_df=val_df, verbose=True)
 

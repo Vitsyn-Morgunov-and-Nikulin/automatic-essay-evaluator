@@ -3,7 +3,7 @@ import pandas as pd
 
 class BasePreprocessor:
 
-    def preprocess_data(self, X: pd.Series) -> pd.Series:
+    def preprocess_data(self, data: pd.Series) -> pd.Series:
         """Performs preprocessing of raw texts, returns cleaned texts
 
         :param X: raw texts

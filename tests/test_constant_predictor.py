@@ -3,7 +3,7 @@ from src.solutions.constant_predictor import ConstantPredictorSolution
 
 
 def test_constant_predictor():
-    train_df, test_df = load_train_test_df(is_testing=True)
+    _, test_df = load_train_test_df(is_testing=True)
 
     predictor = ConstantPredictorSolution()
     submission_df = predictor.predict(test_df)

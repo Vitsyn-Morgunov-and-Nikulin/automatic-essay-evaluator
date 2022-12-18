@@ -16,7 +16,8 @@
     <li><a href="#motivation">About the project</a></li>
     <li><a href="getting-started">Getting Started</li>
     <li><a href="#qe">Quality Ensuring</a></li>
-    <li><a href="#contributors">Contributors</a></li>
+    <li><a href="#contribute">How to contribute?</a></li>
+    <li><a href="#contributors">Major Contributors</a></li>
   </ul>
 </details>
 
@@ -70,6 +71,16 @@ We put a significant effort to (partially) automate routine operations and restr
 - Used [snyk](https://snyk.io) to find vulnerabilities, e.g., in this [PR](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/pull/21);
 - Tried to attach commits to tickets (mostly in latter part of development).
 
+## ✏️ How to contribute? <a name="contribute"></a>
+In our development process we followed practices described by Uncle Bob in his magnificent "Clean Code". Please, consult this book in case any trouble.
+
+Make a fork of this repository, and develop your own tool. Make sure it is error-free and the test coverage is at least 60 percent. Update `config` files accordingly, and check their operability.
+
+While producing your code, use this famous [git workflow](https://nvie.com/posts/a-successful-git-branching-model/). Also note that our branches use prefixes `feature/`, `fix/`, and `ci-cd`.
+
+Further, send a pull request. In the comment, write the main features of the tool, the technology stack used, and a brief description of the algorithms. This should be enough for us to accept your code.
+
+> To check the quality of the code, we use `flake8` and `codacy`.
 
 ## 💻 Contributors <a name="contributors"></a>
 **Shamil Arslanov** <br>

@@ -64,7 +64,7 @@ The interface is quite intuitive and user-friendly: entire workflow is guided by
 ## 🚀 Quality Ensuring <a name="qe"></a>
 We put a significant effort to (partially) automate routine operations and restrict programmers from violating style rules and designing non-working code:
 - [Using Poetry](.pyproject.toml) to avoid dependency hell (replacement for `pip` package);
-- [Continuous integration workflow](.github/workflows/ci.yaml) that performs linting according to [PEP8](.flake8) and [unit testing](tests);
+- [Continuous integration workflow](.github/workflows/ci.yaml) that performs linting according to [PEP8](.flake8) and [unit/integration testing](tests);
 - [Pre-commit hooking](.pre-commit-config.yaml) that runs autopep8, dependencies sorting, and autoflake;
 - [Submission workflow](.github/workflows/kaggle.yaml) that loads our best performing solution to Kaggle kernel;
 - [Configurable experiments](src/config/conf/) via Hydra that keeps our studies clean and structured;

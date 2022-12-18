@@ -94,3 +94,6 @@ Further, send a pull request. In the comment, write the main features of the too
 **Danis Alukaev** <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Email: <a>d.alukaev@innopolis.university</a> <br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; GitHub: <a href="https://github.com/DanisAlukaev">@DanisAlukaev</a> <br>
+
+## 📃 Licence <a name="license"></a>
+`Lunguask` is free and open-source software licensed under the [MIT License](LICENSE).

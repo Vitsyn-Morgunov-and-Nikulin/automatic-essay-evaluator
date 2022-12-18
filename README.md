@@ -13,11 +13,12 @@
 
 <details>
   <summary>Table of Contents</summary>
-  <ol>
-    <li><a href="#motivation">Motivation</a></li>
+  <ul>
+    <li><a href="#motivation">About the project</a></li>
+    <li><a href="getting-started">Getting Started</li>
     <li><a href="#qe">Quality Ensuring</a></li>
     <li><a href="#contributors">Contributors</a></li>
-  </ol>
+  </ul>
 </details>
 
 <br>
@@ -29,6 +30,27 @@ Writing skills are essential for a modern person and must be developed throughou
 Accordingly, creation of an open-source automated text evaluator tends to be a natural step towards enhanced writing skills within society. Firstly, it can speed up the essay review processes done by teachers. Secondly, such a tool can make assessment more unbiased. Thirdly, it might help foreigners to identify linguistic gaps and thereby facilitate the learning process.
 
 As a part of [feedback prize](https://www.kaggle.com/competitions/feedback-prize-english-language-learning) competition our goal is to create an automatic solution that scores students’ essays using multiple criteria: cohesion, syntax, vocabulary, phraseology, grammar, and conventions. For each criterion, the system assigns a score from `1.0` to `5.0`.
+
+## ⚡ Getting Started <a name="getting-started"></a>
+
+### Prerequisites:
+1. GNU `make` utility ([link](https://www.gnu.org/software/make/))
+2. Python of version 3.7.13 ([link](https://www.python.org/downloads/release/python-3713/))
+3. Packaging manager `poetry` ([link](https://python-poetry.org))
+4. At least 2Gb on your hard disk
+
+Once all of above is satisfied, execute the following to setup the poetry:
+```
+poetry lock
+poetry --no-root install
+```
+
+
+### Run application locally
+To your delight, it's done via a single command:
+```
+poetry run make build
+```
 
 ## 🚀 Quality Ensuring <a name="qe"></a>
 We put a significant effort to (partially) automate routine operations and restrict programmers from violating style rules and designing non-working code:

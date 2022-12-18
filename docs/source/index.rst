@@ -1,15 +1,4 @@
-Welcome to our project!
+Welcome to Linguask!
 ===================================
 
-This page documents our functions and examples.
-
-.. note::
-
-   This project is under active development.
-
-
-.. toctree::
-   :hidden:
-
-   usage
-   contribute
+.. mdinclude:: ../../README.md

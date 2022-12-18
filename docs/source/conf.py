@@ -8,8 +8,8 @@ sys.path.insert(0, os.path.abspath('../../src'))
 
 # -- Project information
 
-project = 'Coastal'
-copyright = '2021'
+project = 'Linguask'
+copyright = '2022'
 author = 'Multiple'
 
 release = '0.1'
@@ -52,7 +52,7 @@ epub_show_urls = 'footnote'
 
 html_context = {
     "display_github": True,  # Integrate GitHub
-    "github_repo": "eeholmes/readthedoc-test",  # Repo name
+    "github_repo": "vitsyn-morgunov-and-nikulin/automatic-essay-evaluator",  # Repo name
     "github_version": "main",  # Version
     "conf_py_path": "docs/source/",  # Path in the checkout to the docs root
 }
@@ -68,7 +68,7 @@ html_show_copyright = True
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
-repository_url = f"https://github.com/ICESAT-2HackWeek/coastal_topobathy"
+repository_url = f"https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator"
 html_context = {
     "menu_links": [
         (

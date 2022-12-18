@@ -1,10 +1,9 @@
 <div align="center" height="130px">
   <img src="./docs/logo.png" alt="Logotype"/><br/>
-  <h1> Automated Essay Evaluator </h1>
   <p></p>
 </div>
 
-> Linguask: express your thoughts — achieve your goals!
+> Express your thoughts — achieve your goals!
 
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/e900ed98717c4c61b7dff288a075c6e8)](https://www.codacy.com/gh/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator&amp;utm_campaign=Badge_Grade)
 [![codecov](https://codecov.io/gh/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/branch/mlops/hydra/graph/badge.svg?token=Q21TAQTAZY)](https://codecov.io/gh/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator)
@@ -32,6 +31,9 @@ Accordingly, creation of an open-source automated text evaluator tends to be a n
 As a part of [feedback prize](https://www.kaggle.com/competitions/feedback-prize-english-language-learning) competition our goal is to create an automatic solution that scores students’ essays using multiple criteria: cohesion, syntax, vocabulary, phraseology, grammar, and conventions. For each criterion, the system assigns a score from `1.0` to `5.0`.
 
 ## ⚡ Getting Started <a name="getting-started"></a>
+
+### Use our service
+Check out our relevant version that is [available on this link](https://huggingface.co/spaces/Booguy/automatic-essay-evaluator)!
 
 ### Prerequisites:
 1. GNU `make` utility ([link](https://www.gnu.org/software/make/))

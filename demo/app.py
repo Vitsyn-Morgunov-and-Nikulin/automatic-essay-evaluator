@@ -55,7 +55,7 @@ with st.form(key="my_form"):
         res = len(re.findall(r"\w+", doc))
         doc = doc[:MAX_WORDS]
 
-        submit_button = st.form_submit_button(label="✨ Get me the data!")
+        submit_button = st.form_submit_button(label="✨ Assess my text!")
 
 if not submit_button:
     st.stop()

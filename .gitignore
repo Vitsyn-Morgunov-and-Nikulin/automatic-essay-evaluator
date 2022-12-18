@@ -114,3 +114,5 @@ requirements-dev.txt
 checkpoints/
 # hydra-outputs
 outputs/
+# weights
+demo/model.ckpt

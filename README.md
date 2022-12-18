@@ -1,5 +1,5 @@
 <div align="center" height="130px">
-  <img src="./docs/logo.png" alt="Logotype"/><br/>
+  <img src="./docs/images/logo.png" alt="Logotype"/><br/>
   <p></p>
 </div>
 
@@ -57,7 +57,7 @@ poetry run make build
 ## 📖 How it works?
 Our top performing solution is based on the fine-tuned DeBERTa model `deberta-v3-large` and six CatBoost Regressors predicting analytical measures. Based on this solution there was built a automatic essay evaluator system powered by Hugging Face Demo engine.
 
-<img src="docs/demo.jpeg" alt="drawing" width="300"/>
+<img src="docs/images/demo.jpeg" alt="drawing" width="300"/>
 
 The interface is quite intuitive and user-friendly: entire workflow is guided by a textual annotations. User is asked to insert an essay in a correspondent text field. Once the document is ready, our system inferences the model and visualises the results in the very same window. Essay seems to belong to a solid B student — good for him!
 

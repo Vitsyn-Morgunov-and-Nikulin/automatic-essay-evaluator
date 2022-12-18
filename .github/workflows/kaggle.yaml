@@ -19,11 +19,12 @@ jobs:
           python-version: 3.7.13
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
-          pip install --user -r requirements.txt
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry lock
+          poetry --no-root install
       - name: Authenticate to Kaggle
         run: |
           mkdir ~/.kaggle
           echo ${{ secrets.KAGGLE }} >> ~/.kaggle/kaggle.json
       - name: Push kernel
-        run: kaggle kernels push -p src/
+        run: poetry run kaggle kernels push -p src/

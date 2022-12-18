@@ -7,7 +7,7 @@ pandas_set_print_options()
 
 
 def test_cross_validation():
-    train_df, test_df = load_train_test_df(is_testing=True)
+    train_df, _ = load_train_test_df(is_testing=True)
 
     x_columns = ['text_id', 'full_text']
     X, y = train_df[x_columns], train_df.drop(columns=['full_text'])

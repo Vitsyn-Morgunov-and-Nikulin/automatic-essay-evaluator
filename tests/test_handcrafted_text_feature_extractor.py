@@ -5,7 +5,7 @@ from src.spell_checker import SmartSpellChecker
 
 
 def test_text_feature_generation():
-    train_df, test_df = load_train_test_df(is_testing=True)
+    train_df, _ = load_train_test_df(is_testing=True)
 
     spellcheck = SmartSpellChecker()
 

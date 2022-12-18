@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - docs/sphinx
 
 jobs:
   build_job:

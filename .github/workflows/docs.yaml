@@ -1,0 +1,47 @@
+name: sphinx-documentation
+
+on:
+  push:
+    branches:
+      - main
+      - docs/sphinx
+
+jobs:
+  build_job:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.7.13
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7.13
+      - name: Install dependencies
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry lock
+          poetry --no-root install
+      - name: Make the sphinx docs
+        run: |
+          make -C docs clean
+          make -C docs html
+      - name: Commit generated files
+        run: |
+          mkdir docs/build
+          mkdir docs/build/html
+          cd docs/build/html
+          git init
+          touch .nojekyll
+          git add -A
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m ${{ github.ref }}
+      - name: Push to destination branch
+        uses: ad-m/github-push-action@v0.5.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          force: true
+          directory: ./docs/build/html

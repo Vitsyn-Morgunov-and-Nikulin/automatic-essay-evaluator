@@ -1,5 +1,5 @@
 <div align="center" height="130px">
-  <img src="./docs/logo.png" alt="Logotype"/><br/>
+  <img src="./docs/images/logo.png" alt="Logotype"/><br/>
   <p></p>
 </div>
 
@@ -10,20 +10,29 @@
 [![CI/CD master](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/actions/workflows/ci.yaml/badge.svg)](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/actions/workflows/ci.yaml)
 [![Kaggle master](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/actions/workflows/kaggle.yaml/badge.svg)](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/actions/workflows/kaggle.yaml)
 
+| [🔥 Try Now!](https://huggingface.co/spaces/Booguy/automatic-essay-evaluator) | [💿 Docs](http://vitsyn-morgunov-and-nikulin.github.io/automatic-essay-evaluator) | [🏆 Competition](https://www.kaggle.com/competitions/feedback-prize-english-language-learning) |
+
 <details>
-  <summary>Table of Contents</summary>
+  <summary>  📌 Table of Contents </summary>
   <ul>
-    <li><a href="#motivation">About the project</a></li>
+    <li><a href="#about-the-project">About the project</a></li>
     <li><a href="getting-started">Getting Started</li>
-    <li><a href="#qe">Quality Ensuring</a></li>
-    <li><a href="#contribute">How to contribute?</a></li>
-    <li><a href="#contributors">Major Contributors</a></li>
+    <ul>
+      <li><a href="use-our-service">Use our service</li>
+      <li><a href="prerequisites">Prerequisites</li>
+      <li><a href="run-locally">Run application locally</li>
+    </ul>
+    <li><a href="#how-it-works">How it works?</a></li>
+    <li><a href="#quality-ensuring">Quality Ensuring</a></li>
+    <li><a href="#how-to-contribute">How to contribute?</a></li>
+    <li><a href="#contributors">Contributors</a></li>
+    <li><a href="#license">License</a></li>
   </ul>
 </details>
 
 <br>
 
-## 📝 About the project <a name="motivation"></a>
+## 📝 About the project <a name="about-the-project"></a>
 
 Writing skills are essential for a modern person and must be developed throughout the entire life. Good piece of writing might help in career, relationships, personal effectiveness, and even in self-understanding. However, improving this competency could be problematic in the absence of a reviewer.
 
@@ -33,10 +42,10 @@ As a part of [feedback prize](https://www.kaggle.com/competitions/feedback-prize
 
 ## ⚡ Getting Started <a name="getting-started"></a>
 
-### Use our service
+### Use our service <a name="use-our-service"></a>
 Check out our relevant version that is [available on this link](https://huggingface.co/spaces/Booguy/automatic-essay-evaluator)!
 
-### Prerequisites:
+### Prerequisites: <a name="prerequisites"></a>
 1. GNU `make` utility ([link](https://www.gnu.org/software/make/))
 2. Python of version 3.7.13 ([link](https://www.python.org/downloads/release/python-3713/))
 3. Packaging manager `poetry` ([link](https://python-poetry.org))
@@ -48,20 +57,20 @@ poetry lock
 poetry --no-root install
 ```
 
-### Run application locally
+### Run application locally <a name="run-locally"></a>
 To your delight, it's done via a single command:
 ```
 poetry run make build
 ```
 
-## 📖 How it works?
+## 📖 How it works? <a name="how-it-works"></a>
 Our top performing solution is based on the fine-tuned DeBERTa model `deberta-v3-large` and six CatBoost Regressors predicting analytical measures. Based on this solution there was built a automatic essay evaluator system powered by Hugging Face Demo engine.
 
-<img src="docs/demo.jpeg" alt="drawing" width="300"/>
+<img src="docs/images/demo.jpeg" alt="drawing" width="300"/>
 
 The interface is quite intuitive and user-friendly: entire workflow is guided by a textual annotations. User is asked to insert an essay in a correspondent text field. Once the document is ready, our system inferences the model and visualises the results in the very same window. Essay seems to belong to a solid B student — good for him!
 
-## 🚀 Quality Ensuring <a name="qe"></a>
+## 🚀 Quality Ensuring <a name="quality-ensuring"></a>
 We put a significant effort to (partially) automate routine operations and restrict programmers from violating style rules and designing non-working code:
 - [Using Poetry](.pyproject.toml) to avoid dependency hell (replacement for `pip` package);
 - [Continuous integration workflow](.github/workflows/ci.yaml) that performs linting according to [PEP8](.flake8) and [unit/integration testing](tests);
@@ -75,9 +84,10 @@ We put a significant effort to (partially) automate routine operations and restr
 - [Notifications in Telegram](src/utils.py) when training is completed;
 - Badges with codecov, codacy, continuous integration, and kaggle submission;
 - Used [snyk](https://snyk.io) to find vulnerabilities, e.g., in this [PR](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/pull/21);
+- Used `sphinx` package for auto-generation of our [documentation](http://vitsyn-morgunov-and-nikulin.github.io/automatic-essay-evaluator);
 - Tried to attach commits to tickets (mostly in latter part of development).
 
-## ✏️ How to contribute? <a name="contribute"></a>
+## ✏️ How to contribute? <a name="how-to-contribute"></a>
 In our development process we followed practices described by Uncle Bob in his magnificent "Clean Code". Please, consult this book in case any trouble.
 
 Make a fork of this repository, and develop your own tool. Make sure it is error-free and the test coverage is at least 60 percent. Update `config` files accordingly, and check their operability.

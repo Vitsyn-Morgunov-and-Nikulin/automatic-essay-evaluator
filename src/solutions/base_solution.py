@@ -1,15 +1,14 @@
 from pathlib import Path
-from typing import List, Optional, Union
+from typing import Any, List, Optional, Union
 
 import pandas as pd
-import torch.nn as nn
 
 
 class BaseSolution:
     """Base class for any competition solution."""
 
     def __init__(self, config: Optional[dict] = None):
-        self.models: List[nn.Module] = []
+        self.models: List[Any] = []
 
     def fit(self, X: pd.DataFrame, y: pd.DataFrame, **kwargs):
         raise NotImplementedError(f"Abstract class {type(self).__name__} is used")

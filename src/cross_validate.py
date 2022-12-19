@@ -123,6 +123,10 @@ class CrossValidation:
 
             predictor_copy = deepcopy(predictor)
             predictor_copy.load(cv_model_path)
-            self.models.append(predictor_copy)
+
+            if not self.base_solution or not self.base_solution.models:
+                raise TypeError
+
+            self.base_solution.models.append(predictor_copy)
 
         print(f"Loaded model successfully from: {path.resolve()}.")

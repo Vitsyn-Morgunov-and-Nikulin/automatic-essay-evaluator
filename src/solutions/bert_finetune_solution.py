@@ -63,7 +63,7 @@ class BertFinetuningPredictor(BaseSolution):
     def fit(self, X: pd.DataFrame, y: pd.DataFrame, **kwargs):
         train_df = pd.concat([X, y], axis='columns')
 
-        val_X, val_y, fold = kwargs['val_X'], kwargs['val_y'], kwargs['fold']
+        val_X, val_y, = kwargs['val_X'], kwargs['val_y']
         val_df = pd.concat([val_X, val_y], axis='columns')
 
         self.model: BertLightningModel = train(self.config, train_df, val_df, verbose=False)

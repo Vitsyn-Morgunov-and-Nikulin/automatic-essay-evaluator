@@ -16,14 +16,14 @@ class CrossValidation:
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
     def __init__(self, saving_dir: str, n_splits: int = 5):
-        saving_dir = Path(saving_dir)
+        _saving_dir = Path(saving_dir)
 
         self.k_fold = KFold(n_splits=n_splits)
         self.metric = MSEMetric()
 
-        if not saving_dir.is_dir():
-            saving_dir.mkdir(exist_ok=True, parents=True)
-        self.saving_dir = saving_dir
+        if not _saving_dir.is_dir():
+            _saving_dir.mkdir(exist_ok=True, parents=True)
+        self.saving_dir = _saving_dir
         self.base_solution: Optional[BaseSolution] = None
 
     def fit(self, model: BaseSolution, X: pd.DataFrame, y: pd.DataFrame) -> pd.DataFrame:
@@ -56,12 +56,12 @@ class CrossValidation:
 
             del training_model
 
-        scores = pd.DataFrame(scores)
-        mean_values = [scores.mean(axis='rows').values.tolist()]
-        overall = pd.DataFrame(mean_values, columns=scores.columns, index=['overall'])
+        _scores = pd.DataFrame(scores)
+        mean_values = [_scores.mean(axis='rows').values.tolist()]
+        overall = pd.DataFrame(mean_values, columns=_scores.columns, index=['overall'])
 
-        scores = pd.concat([scores, overall], axis='rows')
-        return scores
+        _scores = pd.concat([_scores, overall], axis='rows')
+        return _scores
 
     def predict(self, X: pd.DataFrame) -> pd.DataFrame:
         """Makes average fold prediction
@@ -77,6 +77,8 @@ class CrossValidation:
         for ii in range(self.k_fold.n_splits):
             model_path = self.saving_dir / f"cv_fold_{ii}"
 
+            if not self.base_solution:
+                raise TypeError
             model = deepcopy(self.base_solution)
             model.load(model_path)
             pred = model.predict(X)
@@ -100,7 +102,10 @@ class CrossValidation:
         if not path.is_dir():
             path.mkdir(parents=True)
 
-        for ii, model in enumerate(self.models):
+        if not self.base_solution or not self.base_solution.models:
+            raise TypeError
+
+        for ii, model in enumerate(self.base_solution.models):
             cv_model_path = path / f"cv_fold_{ii}"
             model.save(cv_model_path)
 

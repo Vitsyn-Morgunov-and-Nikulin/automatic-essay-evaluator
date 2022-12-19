@@ -22,7 +22,6 @@ os.environ['GROUP_NAME'] = 'train_deberta_model-' + get_random_string(6)
 
 
 class BertFinetuningPredictor(BaseSolution):
-    model = None
 
     def __init__(
         self,
@@ -67,7 +66,7 @@ class BertFinetuningPredictor(BaseSolution):
         val_X, val_y, fold = kwargs['val_X'], kwargs['val_y'], kwargs['fold']
         val_df = pd.concat([val_X, val_y], axis='columns')
 
-        self.model: BertLightningModel = train(self.config, train_df, val_df, fold=fold, verbose=False)
+        self.model: BertLightningModel = train(self.config, train_df, val_df, verbose=False)
 
     def predict(self, X: pd.DataFrame) -> pd.DataFrame:
         assert self.model is not None, "Model is not trained yet"

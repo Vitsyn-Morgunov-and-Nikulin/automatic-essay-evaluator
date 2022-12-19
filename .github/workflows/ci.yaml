@@ -26,6 +26,9 @@ jobs:
       - name: Lint with flake8
         run: |
           poetry run flake8
+      - name: Lint with static type checker mypy
+        run: |
+          poetry run mypy .
       - name: Test with pytest
         run: |
           poetry run pytest

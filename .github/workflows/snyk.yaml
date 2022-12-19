@@ -1,4 +1,4 @@
-name: snyk vulnerability testing
+name: snyk-vulnerability-testing
 
 on:
   push:

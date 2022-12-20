@@ -31,7 +31,7 @@ jobs:
           mv ./linguask/README.md .
           rm -rf ./linguask/*
           mv .git ./linguask
-          mv README.md .
+          mv README.md ./linguask
           cd ./automatic-essay-evaluator
           rm -rf ./.git
           cd ..

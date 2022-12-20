@@ -82,7 +82,12 @@ Our top performing solution is based on the fine-tuned DeBERTa model `deberta-v3
 The interface is quite intuitive and user-friendly: entire workflow is guided by a textual annotations. User is asked to insert an essay in a correspondent text field. Once the document is ready, our system inferences the model and visualises the results in the very same window. Essay seems to belong to a solid B student — good for him!
 
 ## 🚀 Quality Ensuring <a name="quality-ensuring"></a>
-We put a significant effort to (partially) automate routine operations and restrict programmers from violating style rules and designing non-working code:
+In terms of ISO 25010 standard, this project mainly focuses on performance efficiency: it should ...
+- achieve tolerable mean columnwise root mean squared error (competition metric);
+- perform fast on inference (position in leaderboard depends on runtime);
+- utilize GPU effectively (affects time of each experiment).
+
+Still, we also put significant effort to (partially) automate routine operations and restrict programmers from violating style rules and designing non-working code:
 - [Using Poetry](.pyproject.toml) to avoid dependency hell (replacement for `pip` package);
 - [Continuous integration workflow](.github/workflows/ci.yaml) that performs linting according to [PEP8](.flake8) and [unit/integration testing](tests);
 - [Pre-commit hooking](.pre-commit-config.yaml) that runs autopep8, dependencies sorting, and autoflake;

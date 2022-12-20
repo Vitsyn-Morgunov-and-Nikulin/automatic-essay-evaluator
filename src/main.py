@@ -1,4 +1,5 @@
 import os
+import traceback
 
 import hydra
 from hydra.utils import instantiate
@@ -6,14 +7,14 @@ from omegaconf import DictConfig
 from transformers import logging as transformer_log
 
 from src.data_reader import load_train_test_df
-from src.utils import get_x_columns, report_to_telegram, seed_everything
+from src.utils import (get_x_columns, pretty_cfg, report_to_telegram,
+                       seed_everything)
 
 seed_everything()
 transformer_log.set_verbosity_error()
 
 
-@hydra.main(version_base=None, config_path="config/conf", config_name="config")
-def main(cfg: DictConfig):
+def run(cfg):
     predictor = instantiate(cfg.predictor)
     validator = instantiate(cfg.validator)
 
@@ -35,7 +36,21 @@ def main(cfg: DictConfig):
     cv_results_path = os.path.join(validator.saving_dir, "cv_results.csv")
     results.to_csv(cv_results_path)
 
-    report_to_telegram(cfg=cfg, metric=cv_mean)
+    return cv_mean
+
+
+@hydra.main(version_base=None, config_path="config/conf", config_name="config")
+def main(cfg: DictConfig):
+    try:
+        metric = run(cfg)
+        message = f"✅ Successful run from {cfg.timestamp}!\n\n"
+        message += f"Metric: {metric:.5f} MCRMSE"
+        message += f"Configuration:\n{pretty_cfg(cfg)}"
+    except Exception:
+        message = f"🚫 Run from {cfg.timestamp} failed!\n\n"
+        message += traceback.format_exc()
+    print(message)
+    report_to_telegram(message)
 
 
 if __name__ == "__main__":

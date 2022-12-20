@@ -10,7 +10,7 @@
 [![CI/CD master](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/actions/workflows/ci.yaml/badge.svg)](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/actions/workflows/ci.yaml)
 [![Kaggle master](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/actions/workflows/kaggle.yaml/badge.svg)](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/actions/workflows/kaggle.yaml)
 
-| [🔥 Try Now!](https://huggingface.co/spaces/Booguy/automatic-essay-evaluator) | [💿 Docs](http://vitsyn-morgunov-and-nikulin.github.io/automatic-essay-evaluator) | [🏆 Competition](https://www.kaggle.com/competitions/feedback-prize-english-language-learning) |
+| [🔥 Try Now!](https://huggingface.co/spaces/Booguy/automatic-essay-evaluator) | [💿 Docs](http://vitsyn-morgunov-and-nikulin.github.io/automatic-essay-evaluator) | [🏆 Competition](https://www.kaggle.com/competitions/feedback-prize-english-language-learning) | [🏋️‍♀️ Weights](https://www.kaggle.com/datasets/alukaevdanis/weights-linguask) | [📈 Monitor](https://wandb.ai/parmezano/automated_essay_evaluator/overview) |
 
 <details>
   <summary>  📌 Table of Contents </summary>

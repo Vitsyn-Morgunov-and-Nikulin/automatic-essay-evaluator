@@ -21,6 +21,7 @@
       <li><a href="use-our-service">Use our service</li>
       <li><a href="prerequisites">Prerequisites</li>
       <li><a href="run-locally">Run application locally</li>
+      <li><a href="experiments">Run experiments</li>
     </ul>
     <li><a href="#how-it-works">How it works?</a></li>
     <li><a href="#quality-ensuring">Quality Ensuring</a></li>
@@ -62,6 +63,16 @@ To your delight, it's done via a single command:
 ```
 poetry run make build
 ```
+
+### Run experiments <a name="experiments"></a>
+Our MLOps pipeline is powered by [Hydra package](https://hydra.cc), which allows to configure experiments via yaml files. [This directory](src/config/conf) contains nested configuration for our experiments.
+
+Try out running a baseline using following command:
+```
+poetry run python -m src.main +experiment=sanity_constant_predictor
+```
+
+Directory `src/config/conf/experiments` contains our basic set-ups used in competition. We highly encourage you to fine-tune these configurations and create your own to achieve even higher results!
 
 ## 📖 How it works? <a name="how-it-works"></a>
 Our top performing solution is based on the fine-tuned DeBERTa model `deberta-v3-large` and six CatBoost Regressors predicting analytical measures. Based on this solution there was built a automatic essay evaluator system powered by Hugging Face Demo engine.

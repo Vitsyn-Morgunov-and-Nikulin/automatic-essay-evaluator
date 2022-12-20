@@ -26,6 +26,7 @@ jobs:
           git clone https://huggingface.co/spaces/Booguy/linguask
       - name: Move files to repo
         run: |
+          cd ..
           ls
           find -not -path "linguask/.git/*" -not -name ".git" -delete
           rm -rf automatic-essay-evaluator/.git

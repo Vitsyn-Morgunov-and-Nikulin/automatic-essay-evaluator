@@ -1,3 +1,4 @@
+import json
 import os
 import random
 import string
@@ -8,7 +9,6 @@ import pandas as pd
 import requests
 import torch
 from dotenv import load_dotenv
-from hydra.core.hydra_config import HydraConfig
 from omegaconf import OmegaConf
 
 load_dotenv()
@@ -64,11 +64,16 @@ def get_random_string(length) -> str:
     return result_str
 
 
-def report_to_telegram(cfg, metric=None, chat_ids=(481338688, )):
-    for chat_id in chat_ids:
-        requests.get(
-            'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={text}'.format(
-                bot_token=os.environ['BOT_TOKEN'],
-                chat_id=chat_id,
-                text=f'Finished training \n{HydraConfig.get().overrides.task}\n{OmegaConf.to_yaml(cfg, resolve=True)}\nCV mean: {metric}')
-        )
+def report_to_telegram(message):
+    requests.get(
+        'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={text}'.format(
+            bot_token=os.environ['BOT_TOKEN'],
+            chat_id=os.environ['CHAT_ID'],
+            text=message)
+    )
+
+
+def pretty_cfg(cfg):
+    cfg_dict = OmegaConf.to_container(cfg, resolve=True)
+    cfg_json = json.dumps(cfg_dict, indent=2)
+    return cfg_json

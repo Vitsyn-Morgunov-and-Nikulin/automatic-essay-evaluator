@@ -3,6 +3,8 @@ defaults:
   - validator: cross_validator
   - _self_
 
+timestamp: ${now:%Y-%m-%d}/${now:%H-%M-%S}
+
 hydra:
   job:
     chdir: True

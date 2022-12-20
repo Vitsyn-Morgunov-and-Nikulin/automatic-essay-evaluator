@@ -44,7 +44,7 @@ def main(cfg: DictConfig):
     try:
         metric = run(cfg)
         message = f"✅ Successful run from {cfg.timestamp}!\n\n"
-        message += f"Metric: {metric:.5f} MCRMSE"
+        message += f"Metric: {metric:.5f} MCRMSE\n\n"
         message += f"Configuration:\n{pretty_cfg(cfg)}"
     except Exception:
         message = f"🚫 Run from {cfg.timestamp} failed!\n\n"

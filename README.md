@@ -103,7 +103,7 @@ In our development process we followed practices described by Uncle Bob in his m
 
 Make a fork of this repository, and develop your own tool. Make sure it is error-free and the test coverage is at least 60 percent. Update `config` files accordingly, and check their operability.
 
-While producing your code, use this famous [git workflow](https://nvie.com/posts/a-successful-git-branching-model/). Also note that our branches use prefixes `feature/`, `fix/`, and `ci-cd`.
+While producing your code, use this famous [git workflow](https://nvie.com/posts/a-successful-git-branching-model/). Also note that our branches use prefixes `feature/`, `fix/`, and `ci-cd/`.
 
 Further, send a pull request. In the comment, write the main features of the tool, the technology stack used, and a brief description of the algorithms. This should be enough for us to accept your code.
 

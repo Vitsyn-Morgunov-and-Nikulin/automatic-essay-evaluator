@@ -28,8 +28,10 @@ jobs:
         run: |
           cd ..
           mv ./linguask/.git/ .
+          mv ./linguask/README.md .
           rm -rf ./linguask/*
           mv .git ./linguask
+          mv README.md .
           cd ./automatic-essay-evaluator
           rm -rf ./.git
           cd ..

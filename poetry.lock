@@ -958,6 +958,17 @@ files = [
 ]
 
 [[package]]
+name = "ipynb-py-convert"
+version = "0.4.6"
+description = "Convert .py files runnable in VSCode/Python or Atom/Hydrogen to jupyter .ipynb notebooks and vice versa"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "ipynb-py-convert-0.4.6.tar.gz", hash = "sha256:06c09644f85949939fa749a00fb7f398a0bfcad0e34320ca6666e0cb44b7ea74"},
+]
+
+[[package]]
 name = "isort"
 version = "5.11.3"
 description = "A Python utility / library to sort Python imports."
@@ -3785,4 +3796,4 @@ testing = ["flake8 (<5)", "func-timeout", "jaraco.functools", "jaraco.itertools"
 [metadata]
 lock-version = "2.0"
 python-versions = "3.7.13"
-content-hash = "a4994a8d9f6c072c68ee9ad5588903b3e0cba45b76549ae66116efc7a868a8c6"
+content-hash = "00bb2af5b79ac34f32cfc3c2cbbecced887fcac1dd68cff0c54642f7a5a8a12e"

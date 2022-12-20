@@ -90,7 +90,6 @@ In terms of ISO 25010 standard, this project mainly focuses on performance effic
 Still, we also put significant effort to (partially) automate routine operations and restrict programmers from violating style rules and designing non-working code:
 - [Using Poetry](.pyproject.toml) to avoid dependency hell (replacement for `pip` package);
 - [Continuous integration workflow](.github/workflows/ci.yaml) that performs linting according to [PEP8](.flake8) and [unit/integration testing](tests);
-- [Pre-commit hooking](.pre-commit-config.yaml) that runs autopep8, dependencies sorting, and autoflake;
 - [Submission workflow](.github/workflows/kaggle.yaml) that loads our best performing solution to Kaggle kernel;
 - [Configurable experiments](src/config/conf/) via Hydra that keeps our studies clean and structured;
 - [Syncing experiments](src/model_finetuning/train.py) in [Weights & Biases](https://wandb.ai/site) that helps us to monitor progress of our experiments;
@@ -101,7 +100,9 @@ Still, we also put significant effort to (partially) automate routine operations
 - Badges with codecov, codacy, continuous integration, and kaggle submission;
 - Used [snyk](https://snyk.io) to find vulnerabilities, e.g., in this [PR](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/pull/21);
 - Used `sphinx` package for auto-generation of our [documentation](http://vitsyn-morgunov-and-nikulin.github.io/automatic-essay-evaluator);
-- Tried to attach commits to tickets (mostly in latter part of development).
+- Tried to attach commits to tickets (mostly in latter part of development);
+- [Pre-commit hooking](.pre-commit-config.yaml) that runs autopep8, dependencies sorting, and autoflake.
+  - **Disclaimer:** this practice considered to be harmful, and slow down the process of development! We actively applied it only on prior stages of development. Use it wisely!
 
 ## ✏️ How to contribute? <a name="how-to-contribute"></a>
 In our development process we followed practices described by Uncle Bob in his magnificent "Clean Code". Please, consult this book in case any trouble.

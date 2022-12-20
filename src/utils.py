@@ -1,3 +1,4 @@
+import inspect
 import json
 import os
 import random
@@ -12,6 +13,8 @@ import requests
 import torch
 from dotenv import load_dotenv
 from omegaconf import OmegaConf
+
+from src.kaggle.submission_template import get_source_code
 
 load_dotenv()
 
@@ -94,3 +97,13 @@ def save_experiment(cfg, submission_df, results, saving_dir):
     src_config = os.path.join(".hydra", "config.yaml")
     dst_config = os.path.join(weight_path, "config.yaml")
     shutil.copy(src_config, dst_config)
+
+
+def create_submission(cfg, obj):
+    predictor = obj.__class__.__name__
+    implementation = inspect.getsource(obj.__class__)
+
+    source_code = get_source_code(predictor, implementation)
+    path = os.path.join(cfg.cwd, "src/kaggle/submission.py")
+    with open(path, "w") as file:
+        file.write(source_code)

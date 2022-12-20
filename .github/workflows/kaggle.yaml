@@ -27,7 +27,7 @@ jobs:
           mkdir ~/.kaggle
           echo ${{ secrets.KAGGLE }} >> ~/.kaggle/kaggle.json
       - name: Generate .ipynb
-        run: poetry run ipynb-py-convert src/submission.py src/kaggle/submission.ipynb
+        run: poetry run ipynb-py-convert src/kaggle/submission.py src/kaggle/submission.ipynb
       - name: Push kernel
         run: poetry run kaggle kernels push -p src/kaggle/
       - name: Update weights

@@ -28,8 +28,14 @@ jobs:
         run: |
           cd ..
           ls
-          find -not -path "./linguask/.git/*" -not -name ".git" -exec rm -rv {} +
-          rm -rf ./automatic-essay-evaluator/.git
+          mv ./linguask/.git/ .
+          rm -rf ./linguask/*
+          mv .git ./linguask
+          ls
+          cd ./automatic-essay-evaluator
+          rm -rf ./.git
+          cd ..
+          ls
           cp -a ./automatic-essay-evaluator/. ./linguask
       - name: Commit all files
         run: |

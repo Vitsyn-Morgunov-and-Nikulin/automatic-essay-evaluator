@@ -42,4 +42,4 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git commit -m ${{ github.ref }}
-          git push https://Booguy:$ {{ secrets.HF_TOKEN }}@huggingface.co/spaces/Booguy/linguask.git
+          git push https://Booguy:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/Booguy/linguask.git

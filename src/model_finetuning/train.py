@@ -8,6 +8,7 @@ import wandb
 from pytorch_lightning.callbacks import LearningRateMonitor, ModelCheckpoint
 from pytorch_lightning.loggers import WandbLogger  # noqa
 from sklearn.model_selection import train_test_split
+from torch import Tensor
 
 from src.data_reader import load_train_test_df
 from src.model_finetuning.config import CONFIG
@@ -44,6 +45,10 @@ def train(
         log_model='all',
         group=os.environ['GROUP_NAME'],
     )
+
+    if not wandb.run:
+        raise TypeError
+
     wandb.run.log_code(".")
     wandb.watch(model, criterion=MCRMSELoss())
 
@@ -100,11 +105,14 @@ def predict(config: dict, model: BertLightningModel, df: pd.DataFrame) -> pd.Dat
     ).val_dataloader()
 
     validation_predictions = trainer.predict(model, predict_dataloader, return_predictions=True)
-    validation_predictions = torch.vstack(validation_predictions)
-    validation_predictions = pd.DataFrame({
-        column: validation_predictions[:, ii] for ii, column in enumerate(get_target_columns())
+    if not validation_predictions:
+        raise TypeError
+    validation_predictions_conv = [Tensor(_) for _ in validation_predictions]
+    validation_predictions_tensor = torch.vstack(validation_predictions_conv)
+    validation_predictions_df = pd.DataFrame({
+        column: validation_predictions_tensor[:, ii] for ii, column in enumerate(get_target_columns())
     }, index=df.index)
-    validation_predictions['text_id'] = df['text_id']
+    validation_predictions_df['text_id'] = df['text_id']
 
     return validation_predictions
 

@@ -1,0 +1,30 @@
+name: snyk-vulnerability-testing
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  snyk-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.7.13
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7.13
+      - name: Install snyk
+        run: |
+          curl https://static.snyk.io/cli/latest/snyk-linux -o snyk
+          chmod +x ./snyk
+          mv ./snyk /usr/local/bin/
+      - name: Authenticate in snyk
+        run: |
+          snyk auth ${{ secrets.SNYK_TOKEN }}
+      - name: Test via snyk
+        run: |
+          snyk test

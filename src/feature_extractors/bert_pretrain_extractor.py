@@ -53,11 +53,11 @@ class BertPretrainFeatureExtractor(BaseExtractor):
             classification_outputs.append(cls_output)
 
         self.model = self.model.to("cpu")
-        classification_outputs = torch.cat(classification_outputs, dim=0)
+        classification_outputs_tensor = torch.cat(classification_outputs, dim=0)
         torch.cuda.empty_cache()
-        column_names = [f"{self.model_name}_feat_{ii}" for ii in range(len(classification_outputs[0]))]
+        column_names = [f"{self.model_name}_feat_{ii}" for ii in range(len(classification_outputs_tensor[0]))]
         return pd.DataFrame(
-            data=classification_outputs.tolist(),
+            data=classification_outputs_tensor.tolist(),
             index=data.index,
             columns=column_names
         )

@@ -3,7 +3,7 @@ from string import Template
 source_code_template = Template("""
 import os
 from pathlib import Path
-from typing import Optional, Union
+from typing import Any, List, Optional, Union
 
 import pandas as pd
 from dotenv import load_dotenv

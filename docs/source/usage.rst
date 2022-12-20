@@ -8,7 +8,7 @@ Prerequisites
 ------------
 1. GNU `make` utility (`link <https://www.gnu.org/software/make/>`_)
 2. Python of version 3.7.13 (`link <https://www.python.org/downloads/release/python-3713/>`_)
-3. Packaging manager `poetry` (`link <https://python-poetry.org>``)
+3. Packaging manager `poetry` (`link <https://python-poetry.org>`_)
 4. At least 2Gb on your hard disk
 
 .. code-block:: console

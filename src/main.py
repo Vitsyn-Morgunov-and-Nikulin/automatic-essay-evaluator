@@ -1,6 +1,4 @@
-import os
 import traceback
-from distutils.dir_util import copy_tree
 
 import hydra
 from hydra.utils import instantiate
@@ -9,7 +7,7 @@ from transformers import logging as transformer_log
 
 from src.data_reader import load_train_test_df
 from src.utils import (get_x_columns, pretty_cfg, report_to_telegram,
-                       seed_everything)
+                       save_experiment, seed_everything)
 
 seed_everything()
 transformer_log.set_verbosity_error()
@@ -30,17 +28,9 @@ def run(cfg):
     print(results)
     print(f"CV mean: {cv_mean}")
 
-    print(cfg.cwd)
-
     submission_df = validator.predict(test_df)
-    submission_path = os.path.join(validator.saving_dir, "submission.csv")
-    submission_df.to_csv(submission_path, index=False)
 
-    cv_results_path = os.path.join(validator.saving_dir, "cv_results.csv")
-    results.to_csv(cv_results_path)
-
-    weight_path = os.path.join(cfg.cwd, "data/weights")
-    copy_tree(validator.saving_dir, weight_path)
+    save_experiment(cfg, submission_df, results, validator.saving_dir)
 
     return cv_mean
 

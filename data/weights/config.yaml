@@ -1,0 +1,9 @@
+predictor:
+  _target_: src.solutions.constant_predictor.ConstantPredictorSolution
+validator:
+  _target_: src.cross_validate.CrossValidation
+  saving_dir: checkpoints
+  n_splits: 5
+timestamp: ${now:%Y-%m-%d}/${now:%H-%M-%S}
+cwd: ${hydra:runtime.cwd}
+name: sanity checking of ConstantPredictorSolution

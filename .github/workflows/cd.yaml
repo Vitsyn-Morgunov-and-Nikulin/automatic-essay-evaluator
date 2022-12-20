@@ -27,18 +27,18 @@ jobs:
       - name: Move files to repo
         run: |
           cd ..
-          ls
           mv ./linguask/.git/ .
           rm -rf ./linguask/*
           mv .git ./linguask
-          ls
           cd ./automatic-essay-evaluator
           rm -rf ./.git
           cd ..
-          ls
           cp -a ./automatic-essay-evaluator/. ./linguask
+          cd ./linguask
+          ls
       - name: Commit all files
         run: |
+          cd ..
           cd linguask
           git add .
           git commit -m ${{ github.ref }}

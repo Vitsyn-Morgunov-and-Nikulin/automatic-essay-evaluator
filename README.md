@@ -21,6 +21,7 @@
       <li><a href="use-our-service">Use our service</li>
       <li><a href="prerequisites">Prerequisites</li>
       <li><a href="run-locally">Run application locally</li>
+      <li><a href="experiments">Run experiments</li>
     </ul>
     <li><a href="#how-it-works">How it works?</a></li>
     <li><a href="#quality-ensuring">Quality Ensuring</a></li>
@@ -63,6 +64,16 @@ To your delight, it's done via a single command:
 poetry run make build
 ```
 
+### Run experiments <a name="experiments"></a>
+Our MLOps pipeline is powered by [Hydra package](https://hydra.cc), which allows to configure experiments via yaml files. [This directory](src/config/conf) contains nested configuration for our experiments.
+
+Try out running a baseline using following command:
+```
+poetry run python -m src.main +experiment=sanity_constant_predictor
+```
+
+Directory `src/config/conf/experiments` contains our basic set-ups used in competition. We highly encourage you to fine-tune these configurations and create your own to achieve even higher results!
+
 ## 📖 How it works? <a name="how-it-works"></a>
 Our top performing solution is based on the fine-tuned DeBERTa model `deberta-v3-large` and six CatBoost Regressors predicting analytical measures. Based on this solution there was built a automatic essay evaluator system powered by Hugging Face Demo engine.
 
@@ -71,10 +82,14 @@ Our top performing solution is based on the fine-tuned DeBERTa model `deberta-v3
 The interface is quite intuitive and user-friendly: entire workflow is guided by a textual annotations. User is asked to insert an essay in a correspondent text field. Once the document is ready, our system inferences the model and visualises the results in the very same window. Essay seems to belong to a solid B student — good for him!
 
 ## 🚀 Quality Ensuring <a name="quality-ensuring"></a>
-We put a significant effort to (partially) automate routine operations and restrict programmers from violating style rules and designing non-working code:
+In terms of ISO 25010 standard, this project mainly focuses on performance efficiency: it should ...
+- achieve tolerable mean columnwise root mean squared error (competition metric);
+- perform fast on inference (position in leaderboard depends on runtime);
+- utilize GPU effectively (affects time of each experiment).
+
+Still, we also put significant effort to (partially) automate routine operations and restrict programmers from violating style rules and designing non-working code:
 - [Using Poetry](.pyproject.toml) to avoid dependency hell (replacement for `pip` package);
 - [Continuous integration workflow](.github/workflows/ci.yaml) that performs linting according to [PEP8](.flake8) and [unit/integration testing](tests);
-- [Pre-commit hooking](.pre-commit-config.yaml) that runs autopep8, dependencies sorting, and autoflake;
 - [Submission workflow](.github/workflows/kaggle.yaml) that loads our best performing solution to Kaggle kernel;
 - [Configurable experiments](src/config/conf/) via Hydra that keeps our studies clean and structured;
 - [Syncing experiments](src/model_finetuning/train.py) in [Weights & Biases](https://wandb.ai/site) that helps us to monitor progress of our experiments;
@@ -85,14 +100,16 @@ We put a significant effort to (partially) automate routine operations and restr
 - Badges with codecov, codacy, continuous integration, and kaggle submission;
 - Used [snyk](https://snyk.io) to find vulnerabilities, e.g., in this [PR](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/pull/21);
 - Used `sphinx` package for auto-generation of our [documentation](http://vitsyn-morgunov-and-nikulin.github.io/automatic-essay-evaluator);
-- Tried to attach commits to tickets (mostly in latter part of development).
+- Tried to attach commits to tickets (mostly in latter part of development);
+- [Pre-commit hooking](.pre-commit-config.yaml) that runs autopep8, dependencies sorting, and autoflake.
+  - **Disclaimer:** this practice considered to be harmful, and slow down the process of development! We actively applied it only on prior stages of development. Use it wisely!
 
 ## ✏️ How to contribute? <a name="how-to-contribute"></a>
 In our development process we followed practices described by Uncle Bob in his magnificent "Clean Code". Please, consult this book in case any trouble.
 
 Make a fork of this repository, and develop your own tool. Make sure it is error-free and the test coverage is at least 60 percent. Update `config` files accordingly, and check their operability.
 
-While producing your code, use this famous [git workflow](https://nvie.com/posts/a-successful-git-branching-model/). Also note that our branches use prefixes `feature/`, `fix/`, and `ci-cd`.
+While producing your code, use this famous [git workflow](https://nvie.com/posts/a-successful-git-branching-model/). Also note that our branches use prefixes `feature/`, `fix/`, and `ci-cd/`.
 
 Further, send a pull request. In the comment, write the main features of the tool, the technology stack used, and a brief description of the algorithms. This should be enough for us to accept your code.
 

@@ -24,6 +24,7 @@ sphinx-autoapi = "^2.0.0"
 mypy = "^0.991"
 types-requests = "^2.28.11.5"
 pytest-cov = "^4.0.0"
+ipynb-py-convert = "^0.4.6"
 
 [tool.poetry.group.dev.dependencies]
 flake8 = "^5.0.4"

@@ -6,8 +6,8 @@ from omegaconf import DictConfig
 from transformers import logging as transformer_log
 
 from src.data_reader import load_train_test_df
-from src.utils import (get_x_columns, pretty_cfg, report_to_telegram,
-                       save_experiment, seed_everything)
+from src.utils import (create_submission, get_x_columns, pretty_cfg,
+                       report_to_telegram, save_experiment, seed_everything)
 
 seed_everything()
 transformer_log.set_verbosity_error()
@@ -15,6 +15,8 @@ transformer_log.set_verbosity_error()
 
 def run(cfg):
     predictor = instantiate(cfg.predictor)
+    create_submission(cfg, predictor)
+
     validator = instantiate(cfg.validator)
 
     train_df, test_df = load_train_test_df()

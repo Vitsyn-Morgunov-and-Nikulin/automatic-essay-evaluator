@@ -1,4 +1,4 @@
 _target_: src.solutions.bert_featurizer_solution.BertWithHandcraftedFeaturePredictor
 model_name: bert-base-uncased
 catboost_iter: 500
-saving_dir: checkpoints/BertWithHandcraftedFeaturePredictor
+saving_dir: checkpoints

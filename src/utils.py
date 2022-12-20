@@ -1,6 +1,9 @@
+import json
 import os
 import random
+import shutil
 import string
+from distutils.dir_util import copy_tree
 from typing import List
 
 import numpy as np
@@ -8,7 +11,6 @@ import pandas as pd
 import requests
 import torch
 from dotenv import load_dotenv
-from hydra.core.hydra_config import HydraConfig
 from omegaconf import OmegaConf
 
 load_dotenv()
@@ -64,11 +66,31 @@ def get_random_string(length) -> str:
     return result_str
 
 
-def report_to_telegram(cfg, metric=None, chat_ids=(481338688, )):
-    for chat_id in chat_ids:
-        requests.get(
-            'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={text}'.format(
-                bot_token=os.environ['BOT_TOKEN'],
-                chat_id=chat_id,
-                text=f'Finished training \n{HydraConfig.get().overrides.task}\n{OmegaConf.to_yaml(cfg, resolve=True)}\nCV mean: {metric}')
-        )
+def report_to_telegram(message):
+    requests.get(
+        'https://api.telegram.org/bot{bot_token}/sendMessage?chat_id={chat_id}&text={text}'.format(
+            bot_token=os.environ['BOT_TOKEN'],
+            chat_id=os.environ['CHAT_ID'],
+            text=message)
+    )
+
+
+def pretty_cfg(cfg):
+    cfg_dict = OmegaConf.to_container(cfg, resolve=True)
+    cfg_json = json.dumps(cfg_dict, indent=2)
+    return cfg_json
+
+
+def save_experiment(cfg, submission_df, results, saving_dir):
+    submission_path = os.path.join(saving_dir, "submission.csv")
+    submission_df.to_csv(submission_path, index=False)
+
+    cv_results_path = os.path.join(saving_dir, "cv_results.csv")
+    results.to_csv(cv_results_path)
+
+    weight_path = os.path.join(cfg.cwd, "data/weights")
+    copy_tree(saving_dir, weight_path)
+
+    src_config = os.path.join(".hydra", "config.yaml")
+    dst_config = os.path.join(weight_path, "config.yaml")
+    shutil.copy(src_config, dst_config)

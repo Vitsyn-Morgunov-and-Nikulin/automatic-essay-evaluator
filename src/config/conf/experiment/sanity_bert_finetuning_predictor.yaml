@@ -6,7 +6,7 @@ defaults:
   - override /predictor: bert_finetuning_predictor
 
 validator:
-  saving_dir: checkpoints/BertFinetuningPredictor
+  saving_dir: checkpoints
 
 predictor:
   batch_size: 8

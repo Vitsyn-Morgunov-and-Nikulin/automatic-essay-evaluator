@@ -7,4 +7,4 @@ model_names:
   - unitary/toxic-bert
   - bert-large-uncased
 catboost_iter: 500
-saving_dir: checkpoints/ManyBertWithHandcraftedFeaturePredictor
+saving_dir: checkpoints

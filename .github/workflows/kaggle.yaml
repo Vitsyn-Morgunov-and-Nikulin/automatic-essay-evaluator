@@ -10,7 +10,7 @@ on:
 jobs:
   kaggle-api:
     if: ${{ github.event.pull_request.merged }}
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.7.13
@@ -28,3 +28,5 @@ jobs:
           echo ${{ secrets.KAGGLE }} >> ~/.kaggle/kaggle.json
       - name: Push kernel
         run: poetry run kaggle kernels push -p src/
+      - name: Update weights
+        run: poetry run kaggle datasets version -p data/weights --dir-mode zip -m ${{ github.ref }}

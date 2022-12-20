@@ -34,6 +34,7 @@ jobs:
           mv README.md ./linguask
           cd ./automatic-essay-evaluator
           rm -rf ./.git
+          rm README.md
           cd ..
           cp -a ./automatic-essay-evaluator/. ./linguask
       - name: Commit all files

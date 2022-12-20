@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - ci-cd/fix-codecov
   pull_request:
     branches:
       - main
@@ -20,7 +21,6 @@ jobs:
       - name: Install dependencies
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
-          poetry lock
           poetry --no-root install
       - uses: jamescurtin/isort-action@master
       - name: Lint with flake8
@@ -34,9 +34,8 @@ jobs:
           poetry run pytest
       - name: Coverage report
         run: |
-          poetry run coverage run -m pytest
-          poetry run coverage report
+          poetry run pytest --cov
       - name: Upload Coverage Report to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

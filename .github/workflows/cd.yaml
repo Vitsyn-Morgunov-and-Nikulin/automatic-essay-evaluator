@@ -1,9 +1,6 @@
 name: continuous-deployment
 
 on:
-  push:
-    branches:
-      - ci-cd/hugging-face
   release:
     types: [published]
 

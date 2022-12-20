@@ -10,8 +10,9 @@ from src.solutions.base_solution import BaseSolution
 
 
 class ConstantPredictorSolution(BaseSolution):
-    def __init__(self):
+    def __init__(self, const=3.0):
         super().__init__()
+        self.const = const
 
     def fit(self, X: pd.DataFrame, y: pd.DataFrame, **kwargs) -> None:
         pass
@@ -22,21 +23,33 @@ class ConstantPredictorSolution(BaseSolution):
         for _, row in X.iterrows():
             submission_df.append({
                 'text_id': row.text_id,
-                'cohesion': 3.0,
-                'syntax': 3.0,
-                'vocabulary': 3.0,
-                'phraseology': 3.0,
-                'grammar': 3.0,
-                'conventions': 3.0
+                'cohesion': self.const,
+                'syntax': self.const,
+                'vocabulary': self.const,
+                'phraseology': self.const,
+                'grammar': self.const,
+                'conventions': self.const
             })
 
         return pd.DataFrame(submission_df)
 
     def save(self, directory: Union[str, Path]) -> None:
-        pass
+        directory = Path(directory)
+        if not directory.exists():
+            directory.mkdir(parents=True)
+
+        path = directory / "weights.ckpt"
+        with open(path, 'w') as file:
+            file.write(str(self.const))
 
     def load(self, directory: Union[str, Path]) -> None:
-        pass
+        directory = Path(directory)
+        if not directory.exists():
+            directory.mkdir(parents=True)
+
+        path = directory / "weights.ckpt"
+        with open(path, 'r') as file:
+            self.const = float(file.read())
 
     def to(self, device: str) -> 'BaseSolution':
         return self

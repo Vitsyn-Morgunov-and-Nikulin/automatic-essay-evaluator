@@ -6,7 +6,7 @@ defaults:
   - override /predictor: many_bert_with_handcrafted_feature_predictor
 
 validator:
-  saving_dir: checkpoints/ManyBertWithHandcraftedFeaturePredictor
+  saving_dir: checkpoints
 
 predictor:
   model_names:

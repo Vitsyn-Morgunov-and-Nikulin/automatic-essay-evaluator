@@ -6,7 +6,8 @@ defaults:
   - override /predictor: bert_with_handcrafted_feature_predictor
 
 validator:
-  saving_dir: checkpoints/BertWithHandcraftedFeaturePredictor
+  saving_dir: checkpoints
+  n_splits: 2
 
 predictor:
   catboost_iter: 5

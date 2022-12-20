@@ -51,11 +51,11 @@ class BertWithHandcraftedFeaturePredictor(BaseSolution):
         ]
 
     def transform_data(self, X: pd.Series) -> pd.DataFrame:
-        # cleaned_text = self.text_preprocessing.preprocess_data(X)
-        # bert_features = self.bert.generate_features(cleaned_text)
+        cleaned_text = self.text_preprocessing.preprocess_data(X)
+        bert_features = self.bert.generate_features(cleaned_text)
         bert_features = self.bert.generate_features(X)
-        # handcrafted_features = self.feature_extractor.generate_features(X)
-        # features_df = pd.concat([bert_features, handcrafted_features], axis='columns')
+        handcrafted_features = self.feature_extractor.generate_features(X)
+        features_df = pd.concat([bert_features, handcrafted_features], axis='columns')
 
         features_df = bert_features
 

@@ -59,6 +59,7 @@ class CrossValidation:
         _scores = pd.DataFrame(scores)
         mean_values = [_scores.mean(axis='rows').values.tolist()]
         overall = pd.DataFrame(mean_values, columns=_scores.columns, index=['overall'])
+        print("\n")
 
         _scores = pd.concat([_scores, overall], axis='rows')
         return _scores

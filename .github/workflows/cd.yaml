@@ -1,0 +1,45 @@
+name: continuous-deployment
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  continuous-deployment:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.7.13
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7.13
+      - name: Install dependencies
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          poetry --no-root install
+      - name: Clone Hugging Face repo
+        run: |
+          cd ..
+          git clone https://huggingface.co/spaces/Booguy/linguask
+      - name: Move files to repo
+        run: |
+          cd ..
+          mv ./linguask/.git/ .
+          mv ./linguask/README.md .
+          rm -rf ./linguask/*
+          mv .git ./linguask
+          mv README.md ./linguask
+          cd ./automatic-essay-evaluator
+          rm -rf ./.git
+          rm README.md
+          cd ..
+          cp -a ./automatic-essay-evaluator/. ./linguask
+      - name: Commit all files
+        run: |
+          cd ..
+          cd linguask
+          git add .
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m ${{ github.ref }}
+          git push https://Booguy:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/Booguy/linguask.git

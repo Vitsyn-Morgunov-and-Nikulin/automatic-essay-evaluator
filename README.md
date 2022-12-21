@@ -97,6 +97,7 @@ Still, we also put significant effort to (partially) automate routine operations
 - [Evaluation via cross-validation](src/cross_validate.py) that is cosidered to be the most objective amid possible ways to assess generalization of a model;
 - [Reproducible experimentation](src/utils.py) that guarantees that same set-up will give equal results on different machines;
 - [Notifications in Telegram](src/utils.py) when training is completed;
+- Thoughtful pull request reviews, e.g. [here](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/pull/4) — our inspection was based on "Clean Code" book by Uncle Bob;
 - Badges with codecov, codacy, continuous integration, and kaggle submission;
 - Used [snyk](https://snyk.io) to find vulnerabilities, e.g., in this [PR](https://github.com/Vitsyn-Morgunov-and-Nikulin/automatic-essay-evaluator/pull/21);
 - Used `sphinx` package for auto-generation of our [documentation](http://vitsyn-morgunov-and-nikulin.github.io/automatic-essay-evaluator);

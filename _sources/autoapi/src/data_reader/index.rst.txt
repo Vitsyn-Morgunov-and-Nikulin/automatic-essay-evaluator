@@ -1,0 +1,32 @@
+:py:mod:`src.data_reader`
+=========================
+
+.. py:module:: src.data_reader
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   src.data_reader.set_env_if_kaggle_environ
+   src.data_reader.load_train_test_df
+
+
+
+.. py:function:: set_env_if_kaggle_environ() -> None
+
+
+.. py:function:: load_train_test_df(is_testing: bool = False) -> Tuple[pandas.DataFrame, pandas.DataFrame]
+
+   Loads train/test dataframes
+
+   :param is_testing: If set to true, load subsample of train/test dataframes
+   :return Train and test dataframes
+
+
+

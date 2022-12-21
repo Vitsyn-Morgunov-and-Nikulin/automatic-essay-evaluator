@@ -1,0 +1,52 @@
+:py:mod:`src.solutions.base_solution`
+=====================================
+
+.. py:module:: src.solutions.base_solution
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   src.solutions.base_solution.BaseSolution
+
+
+
+
+.. py:class:: BaseSolution(config: Optional[dict] = None)
+
+   Base class for any competition solution.
+
+   .. py:method:: fit(X: pandas.DataFrame, y: pandas.DataFrame, **kwargs)
+      :abstractmethod:
+
+
+   .. py:method:: predict(X: pandas.DataFrame) -> pandas.DataFrame
+      :abstractmethod:
+
+
+   .. py:method:: save(directory: Union[str, pathlib.Path]) -> None
+      :abstractmethod:
+
+      Stores model to the directory.
+
+      The directory must be empty.
+
+
+   .. py:method:: load(directory: Union[str, pathlib.Path]) -> None
+      :abstractmethod:
+
+      Loads model from the directory.
+
+      Initializes the solution correctly even if the config dict
+      wasn't specified in the constructor.
+
+      The directory should not contain files other than those produced by
+      the `save` method of the same class.
+
+
+

@@ -1,0 +1,31 @@
+:py:mod:`base_extractor`
+========================
+
+.. py:module:: base_extractor
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   base_extractor.BaseExtractor
+
+
+
+
+.. py:class:: BaseExtractor
+
+   .. py:method:: generate_features(data: pandas.Series) -> pandas.DataFrame
+      :abstractmethod:
+
+      Generates features for model
+
+      :param X: Series, that contains texts
+      :return: Dataframe with columns - features, generated from text
+
+
+

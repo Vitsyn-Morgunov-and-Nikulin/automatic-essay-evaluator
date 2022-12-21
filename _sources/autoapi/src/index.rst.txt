@@ -1,0 +1,29 @@
+:py:mod:`src`
+=============
+
+.. py:module:: src
+
+
+Subpackages
+-----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 3
+
+   solutions/index.rst
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   cross_validate/index.rst
+   data_reader/index.rst
+   main/index.rst
+   metrics/index.rst
+   spell_checker/index.rst
+   utils/index.rst
+
+

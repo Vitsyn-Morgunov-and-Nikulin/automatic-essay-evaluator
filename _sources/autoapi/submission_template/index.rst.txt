@@ -1,0 +1,35 @@
+:py:mod:`submission_template`
+=============================
+
+.. py:module:: submission_template
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   submission_template.get_source_code
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   submission_template.source_code_template
+
+
+.. py:data:: source_code_template
+   
+
+   
+
+.. py:function:: get_source_code(predictor, implementation)
+
+

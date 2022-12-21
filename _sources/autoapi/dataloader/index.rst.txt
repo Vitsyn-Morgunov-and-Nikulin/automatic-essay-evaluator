@@ -1,0 +1,212 @@
+:py:mod:`dataloader`
+====================
+
+.. py:module:: dataloader
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   dataloader.ClassificationDataset
+   dataloader.ClassificationDataloader
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   dataloader.collate_fn
+
+
+
+.. py:function:: collate_fn(data)
+
+
+.. py:class:: ClassificationDataset(tokenizer: transformers.BertTokenizer, df: pandas.DataFrame, config: dict)
+
+   Bases: :py:obj:`torch.utils.data.Dataset`
+
+   An abstract class representing a :class:`Dataset`.
+
+   All datasets that represent a map from keys to data samples should subclass
+   it. All subclasses should overwrite :meth:`__getitem__`, supporting fetching a
+   data sample for a given key. Subclasses could also optionally overwrite
+   :meth:`__len__`, which is expected to return the size of the dataset by many
+   :class:`~torch.utils.data.Sampler` implementations and the default options
+   of :class:`~torch.utils.data.DataLoader`.
+
+   .. note::
+     :class:`~torch.utils.data.DataLoader` by default constructs a index
+     sampler that yields integral indices.  To make it work with a map-style
+     dataset with non-integral indices/keys, a custom sampler must be provided.
+
+   .. py:method:: __getitem__(item)
+
+      Returns dict with input_ids, token_type_ids, attention_mask, labels
+              
+
+
+   .. py:method:: __len__()
+
+
+
+.. py:class:: ClassificationDataloader(tokenizer: transformers.BertTokenizer, train_df: pandas.DataFrame, val_df: pandas.DataFrame, config: dict)
+
+   Bases: :py:obj:`pytorch_lightning.LightningDataModule`
+
+   A DataModule standardizes the training, val, test splits, data preparation and transforms. The main
+   advantage is consistent data splits, data preparation and transforms across models.
+
+   Example::
+
+       class MyDataModule(LightningDataModule):
+           def __init__(self):
+               super().__init__()
+           def prepare_data(self):
+               # download, split, etc...
+               # only called on 1 GPU/TPU in distributed
+           def setup(self, stage):
+               # make assignments here (val/train/test split)
+               # called on every process in DDP
+           def train_dataloader(self):
+               train_split = Dataset(...)
+               return DataLoader(train_split)
+           def val_dataloader(self):
+               val_split = Dataset(...)
+               return DataLoader(val_split)
+           def test_dataloader(self):
+               test_split = Dataset(...)
+               return DataLoader(test_split)
+           def teardown(self):
+               # clean up after fit or test
+               # called on every process in DDP
+
+   .. py:method:: train_dataloader()
+
+      Implement one or more PyTorch DataLoaders for training.
+
+      Return:
+          A collection of :class:`torch.utils.data.DataLoader` specifying training samples.
+          In the case of multiple dataloaders, please see this :ref:`section <multiple-dataloaders>`.
+
+      The dataloader you return will not be reloaded unless you set
+      :paramref:`~pytorch_lightning.trainer.Trainer.reload_dataloaders_every_n_epochs` to
+      a positive integer.
+
+      For data processing use the following pattern:
+
+          - download in :meth:`prepare_data`
+          - process and split in :meth:`setup`
+
+      However, the above are only necessary for distributed processing.
+
+      .. warning:: do not assign state in prepare_data
+
+      - :meth:`~pytorch_lightning.trainer.trainer.Trainer.fit`
+      - :meth:`prepare_data`
+      - :meth:`setup`
+
+      Note:
+          Lightning adds the correct sampler for distributed and arbitrary hardware.
+          There is no need to set it yourself.
+
+      Example::
+
+          # single dataloader
+          def train_dataloader(self):
+              transform = transforms.Compose([transforms.ToTensor(),
+                                              transforms.Normalize((0.5,), (1.0,))])
+              dataset = MNIST(root='/path/to/mnist/', train=True, transform=transform,
+                              download=True)
+              loader = torch.utils.data.DataLoader(
+                  dataset=dataset,
+                  batch_size=self.batch_size,
+                  shuffle=True
+              )
+              return loader
+
+          # multiple dataloaders, return as list
+          def train_dataloader(self):
+              mnist = MNIST(...)
+              cifar = CIFAR(...)
+              mnist_loader = torch.utils.data.DataLoader(
+                  dataset=mnist, batch_size=self.batch_size, shuffle=True
+              )
+              cifar_loader = torch.utils.data.DataLoader(
+                  dataset=cifar, batch_size=self.batch_size, shuffle=True
+              )
+              # each batch will be a list of tensors: [batch_mnist, batch_cifar]
+              return [mnist_loader, cifar_loader]
+
+          # multiple dataloader, return as dict
+          def train_dataloader(self):
+              mnist = MNIST(...)
+              cifar = CIFAR(...)
+              mnist_loader = torch.utils.data.DataLoader(
+                  dataset=mnist, batch_size=self.batch_size, shuffle=True
+              )
+              cifar_loader = torch.utils.data.DataLoader(
+                  dataset=cifar, batch_size=self.batch_size, shuffle=True
+              )
+              # each batch will be a dict of tensors: {'mnist': batch_mnist, 'cifar': batch_cifar}
+              return {'mnist': mnist_loader, 'cifar': cifar_loader}
+
+
+   .. py:method:: val_dataloader()
+
+      Implement one or multiple PyTorch DataLoaders for validation.
+
+      The dataloader you return will not be reloaded unless you set
+      :paramref:`~pytorch_lightning.trainer.Trainer.reload_dataloaders_every_n_epochs` to
+      a positive integer.
+
+      It's recommended that all data downloads and preparation happen in :meth:`prepare_data`.
+
+      - :meth:`~pytorch_lightning.trainer.trainer.Trainer.fit`
+      - :meth:`~pytorch_lightning.trainer.trainer.Trainer.validate`
+      - :meth:`prepare_data`
+      - :meth:`setup`
+
+      Note:
+          Lightning adds the correct sampler for distributed and arbitrary hardware
+          There is no need to set it yourself.
+
+      Return:
+          A :class:`torch.utils.data.DataLoader` or a sequence of them specifying validation samples.
+
+      Examples::
+
+          def val_dataloader(self):
+              transform = transforms.Compose([transforms.ToTensor(),
+                                              transforms.Normalize((0.5,), (1.0,))])
+              dataset = MNIST(root='/path/to/mnist/', train=False,
+                              transform=transform, download=True)
+              loader = torch.utils.data.DataLoader(
+                  dataset=dataset,
+                  batch_size=self.batch_size,
+                  shuffle=False
+              )
+
+              return loader
+
+          # can also return multiple dataloaders
+          def val_dataloader(self):
+              return [loader_a, loader_b, ..., loader_n]
+
+      Note:
+          If you don't need a validation dataset and a :meth:`validation_step`, you don't need to
+          implement this method.
+
+      Note:
+          In the case where you return multiple validation dataloaders, the :meth:`validation_step`
+          will have an argument ``dataloader_idx`` which matches the order here.
+
+
+

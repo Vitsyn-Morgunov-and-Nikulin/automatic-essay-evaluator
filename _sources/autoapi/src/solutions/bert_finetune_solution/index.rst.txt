@@ -1,0 +1,61 @@
+:py:mod:`src.solutions.bert_finetune_solution`
+==============================================
+
+.. py:module:: src.solutions.bert_finetune_solution
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   src.solutions.bert_finetune_solution.BertFinetuningPredictor
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   src.solutions.bert_finetune_solution.main
+
+
+
+.. py:class:: BertFinetuningPredictor(model_name='microsoft/deberta-v3-large', num_classes=6, lr=2e-05, batch_size=8, num_workers=8, max_length=512, weight_decay=0.01, accelerator='gpu', max_epochs=5, accumulate_grad_batches=4, precision=16, gradient_clip_val=1000, train_size=0.8, num_cross_val_splits=5, num_frozen_layers=20)
+
+   Bases: :py:obj:`src.solutions.base_solution.BaseSolution`
+
+   Base class for any competition solution.
+
+   .. py:method:: fit(X: pandas.DataFrame, y: pandas.DataFrame, **kwargs)
+
+
+   .. py:method:: predict(X: pandas.DataFrame) -> pandas.DataFrame
+
+
+   .. py:method:: save(directory: Union[str, pathlib.Path]) -> None
+
+      Stores model to the directory.
+
+      The directory must be empty.
+
+
+   .. py:method:: load(directory: Union[str, pathlib.Path]) -> None
+
+      Loads model from the directory.
+
+      Initializes the solution correctly even if the config dict
+      wasn't specified in the constructor.
+
+      The directory should not contain files other than those produced by
+      the `save` method of the same class.
+
+
+
+.. py:function:: main()
+
+

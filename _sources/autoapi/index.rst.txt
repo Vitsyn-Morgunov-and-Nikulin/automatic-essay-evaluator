@@ -1,0 +1,26 @@
+API Reference
+=============
+
+This page contains auto-generated API reference documentation [#f1]_.
+
+.. toctree::
+   :titlesonly:
+
+   /autoapi/src/index
+   /autoapi/base_preprocessing/index
+   /autoapi/spellcheck_preprocessing/index
+   /autoapi/submission/index
+   /autoapi/submission_template/index
+   /autoapi/dataloader/index
+   /autoapi/train/index
+   /autoapi/config/index
+   /autoapi/losses/index
+   /autoapi/model/index
+   /autoapi/test_term_frequency_feature_extractor/index
+   /autoapi/term_frequency_feature_extractor/index
+   /autoapi/text_statistics_extractor/index
+   /autoapi/bert_pretrain_extractor/index
+   /autoapi/text_statistics_utils/index
+   /autoapi/base_extractor/index
+
+.. [#f1] Created with `sphinx-autoapi <https://github.com/readthedocs/sphinx-autoapi>`_

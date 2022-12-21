@@ -1,0 +1,43 @@
+:py:mod:`text_statistics_utils`
+===============================
+
+.. py:module:: text_statistics_utils
+
+.. autoapi-nested-parse::
+
+   This file contains functions that can generates hand-crafted features from the text
+
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   text_statistics_utils.preprocess_test
+   text_statistics_utils.count_punctuation
+   text_statistics_utils.count_how_many_words_are_repeating
+   text_statistics_utils.count_misspelled_words
+   text_statistics_utils.count_words
+
+
+
+.. py:function:: preprocess_test(text: str) -> str
+
+
+.. py:function:: count_punctuation(text: str) -> Dict[str, int]
+
+
+.. py:function:: count_how_many_words_are_repeating(text: str) -> Dict[str, int]
+
+
+.. py:function:: count_misspelled_words(text: str, spellcheck: src.spell_checker.SmartSpellChecker) -> Dict[str, int]
+
+
+.. py:function:: count_words(text: str) -> Dict[str, int]
+
+

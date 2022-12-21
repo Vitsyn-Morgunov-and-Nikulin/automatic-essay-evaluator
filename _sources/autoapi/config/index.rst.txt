@@ -1,0 +1,14 @@
+:py:mod:`config`
+================
+
+.. py:module:: config
+
+
+Module Contents
+---------------
+
+.. py:data:: CONFIG
+   
+
+   
+

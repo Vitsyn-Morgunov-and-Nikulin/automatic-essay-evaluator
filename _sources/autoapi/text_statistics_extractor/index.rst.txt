@@ -1,0 +1,35 @@
+:py:mod:`text_statistics_extractor`
+===================================
+
+.. py:module:: text_statistics_extractor
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   text_statistics_extractor.HandcraftedTextFeatureExtractor
+
+
+
+
+.. py:class:: HandcraftedTextFeatureExtractor(spellcheck: src.spell_checker.SmartSpellChecker)
+
+   Bases: :py:obj:`src.feature_extractors.base_extractor.BaseExtractor`
+
+   .. py:method:: _generate_features(raw_text: str) -> Dict[str, int]
+
+
+   .. py:method:: generate_features(data: pandas.Series) -> pandas.DataFrame
+
+      Generates features for model
+
+      :param X: Series, that contains texts
+      :return: Dataframe with columns - features, generated from text
+
+
+

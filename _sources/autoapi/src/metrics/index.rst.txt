@@ -1,0 +1,29 @@
+:py:mod:`src.metrics`
+=====================
+
+.. py:module:: src.metrics
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   src.metrics.MSEMetric
+
+
+
+
+.. py:class:: MSEMetric
+
+   .. py:method:: evaluate_class_rmse(y_pred: pandas.DataFrame, y_true: pandas.DataFrame) -> Dict[str, float]
+      :staticmethod:
+
+
+   .. py:method:: evaluate(y_pred: pandas.DataFrame, y_true: pandas.DataFrame) -> float
+
+
+

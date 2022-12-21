@@ -1,0 +1,31 @@
+:py:mod:`src.spell_checker`
+===========================
+
+.. py:module:: src.spell_checker
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   src.spell_checker.SmartSpellChecker
+
+
+
+
+.. py:class:: SmartSpellChecker
+
+   .. py:method:: correct_word(mismatch: str)
+
+
+   .. py:method:: correct_text(text: str)
+
+
+   .. py:method:: unknown(words: Iterable)
+
+
+

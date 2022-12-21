@@ -1,0 +1,74 @@
+:py:mod:`submission`
+====================
+
+.. py:module:: submission
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   submission.BaseSolution
+   submission.ConstantPredictorSolution
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   submission.set_env_if_kaggle_environ
+   submission.main
+
+
+
+.. py:function:: set_env_if_kaggle_environ()
+
+
+.. py:class:: BaseSolution(config: Optional[dict] = None)
+
+   .. py:method:: fit(X: pandas.DataFrame, y: pandas.DataFrame, **kwargs)
+      :abstractmethod:
+
+
+   .. py:method:: predict(X: pandas.DataFrame) -> pandas.DataFrame
+      :abstractmethod:
+
+
+   .. py:method:: save(directory: Union[str, pathlib.Path]) -> None
+      :abstractmethod:
+
+
+   .. py:method:: load(directory: Union[str, pathlib.Path]) -> None
+      :abstractmethod:
+
+
+
+.. py:class:: ConstantPredictorSolution(const=3.0)
+
+   Bases: :py:obj:`BaseSolution`
+
+   .. py:method:: fit(X: pandas.DataFrame, y: pandas.DataFrame, **kwargs) -> None
+
+
+   .. py:method:: predict(X: pandas.DataFrame) -> pandas.DataFrame
+
+
+   .. py:method:: save(directory: Union[str, pathlib.Path]) -> None
+
+
+   .. py:method:: load(directory: Union[str, pathlib.Path]) -> None
+
+
+   .. py:method:: to(device: str) -> BaseSolution
+
+
+
+.. py:function:: main()
+
+

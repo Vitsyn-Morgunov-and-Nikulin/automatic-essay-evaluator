@@ -1,0 +1,19 @@
+:py:mod:`src.solutions`
+=======================
+
+.. py:module:: src.solutions
+
+
+Submodules
+----------
+.. toctree::
+   :titlesonly:
+   :maxdepth: 1
+
+   base_solution/index.rst
+   bert_featurizer_solution/index.rst
+   bert_finetune_solution/index.rst
+   constant_predictor/index.rst
+   many_bert_solution/index.rst
+
+

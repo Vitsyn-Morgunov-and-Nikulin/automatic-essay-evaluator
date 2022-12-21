@@ -1,0 +1,64 @@
+:py:mod:`src.solutions.constant_predictor`
+==========================================
+
+.. py:module:: src.solutions.constant_predictor
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   src.solutions.constant_predictor.ConstantPredictorSolution
+
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   src.solutions.constant_predictor.main
+
+
+
+.. py:class:: ConstantPredictorSolution(const=3.0)
+
+   Bases: :py:obj:`src.solutions.base_solution.BaseSolution`
+
+   Base class for any competition solution.
+
+   .. py:method:: fit(X: pandas.DataFrame, y: pandas.DataFrame, **kwargs) -> None
+
+
+   .. py:method:: predict(X: pandas.DataFrame) -> pandas.DataFrame
+
+
+   .. py:method:: save(directory: Union[str, pathlib.Path]) -> None
+
+      Stores model to the directory.
+
+      The directory must be empty.
+
+
+   .. py:method:: load(directory: Union[str, pathlib.Path]) -> None
+
+      Loads model from the directory.
+
+      Initializes the solution correctly even if the config dict
+      wasn't specified in the constructor.
+
+      The directory should not contain files other than those produced by
+      the `save` method of the same class.
+
+
+   .. py:method:: to(device: str) -> src.solutions.base_solution.BaseSolution
+
+
+
+.. py:function:: main()
+
+

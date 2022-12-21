@@ -1,0 +1,53 @@
+:py:mod:`bert_pretrain_extractor`
+=================================
+
+.. py:module:: bert_pretrain_extractor
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   bert_pretrain_extractor.BertPretrainFeatureExtractor
+   bert_pretrain_extractor.ManyBertPretrainFeatureExtractor
+
+
+
+
+.. py:class:: BertPretrainFeatureExtractor(model_name: str, max_length: int = 512, batch_size=64)
+
+   Bases: :py:obj:`src.feature_extractors.base_extractor.BaseExtractor`
+
+   Extract [CLS] embedding feature from any untrained bert-like models
+
+   .. py:attribute:: device
+      
+
+      
+
+   .. py:method:: generate_features(data: pandas.Series) -> pandas.DataFrame
+
+      Generates features in batch-mode, obtained from untrained bert model.
+
+      :param data: Series with full_text column
+      :return: Dataframe, that have index - id's from data, and columns - bert features
+
+
+
+.. py:class:: ManyBertPretrainFeatureExtractor(model_names: List[str], max_length: int = 512, batch_size=64)
+
+   Bases: :py:obj:`src.feature_extractors.base_extractor.BaseExtractor`
+
+   .. py:method:: generate_features(X: pandas.Series) -> pandas.DataFrame
+
+      Generates features for model
+
+      :param X: Series, that contains texts
+      :return: Dataframe with columns - features, generated from text
+
+
+

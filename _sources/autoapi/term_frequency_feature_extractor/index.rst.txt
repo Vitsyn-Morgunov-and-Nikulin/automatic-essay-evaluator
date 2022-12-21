@@ -1,0 +1,66 @@
+:py:mod:`term_frequency_feature_extractor`
+==========================================
+
+.. py:module:: term_frequency_feature_extractor
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   term_frequency_feature_extractor.TermFrequencyFeatureExtractor
+
+
+
+
+.. py:class:: TermFrequencyFeatureExtractor(n_bins: int = 40)
+
+   Bases: :py:obj:`src.feature_extractors.base_extractor.BaseExtractor`
+
+   Build a dataframe with a distribution of term frequencies
+
+   Usage:
+       >>> data = pd.read_csv("data/raw/train.csv").set_index("text_id")
+       >>> featurizer = TermFrequencyFeaturizer()
+       >>> X = featurizer.featurize(data.full_text)
+       >>> y = data["vocabulary"]
+       >>> model = catboost.CatBoostRegressor()
+       >>> model.fit(x_train, y_train)
+
+   Possible improvements:
+       - Add word corrections: triying -> trying
+       - Count not only word frequencies, but number of unique words in each hist bin
+
+   .. py:attribute:: MAX_TERM_FREQUENCY
+      :annotation: = 23135751162
+
+      
+
+   .. py:method:: _make_bins(n_bins: int) -> numpy.ndarray
+
+
+   .. py:method:: _load_term2freq_dict() -> Dict[str, int]
+
+
+   .. py:method:: generate_features(data: pandas.Series) -> pandas.DataFrame
+
+      Extracts features from the text in the form of histogram of word frequencies
+
+      Logarithm operation is applied to the frequencies for the sake of distribution
+      normality.
+
+
+   .. py:method:: _compute_word_frequency_histogram(text: str) -> pandas.Series
+
+
+   .. py:method:: _compute_term_frequencies_from_text(text: str) -> List[int]
+
+
+   .. py:method:: _build_histogram(values: List[int]) -> numpy.ndarray
+
+
+

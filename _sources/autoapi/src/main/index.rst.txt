@@ -1,0 +1,26 @@
+:py:mod:`src.main`
+==================
+
+.. py:module:: src.main
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   src.main.run
+   src.main.main
+
+
+
+.. py:function:: run(cfg)
+
+
+.. py:function:: main(cfg: omegaconf.DictConfig)
+
+

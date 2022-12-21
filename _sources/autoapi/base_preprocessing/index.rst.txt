@@ -1,0 +1,31 @@
+:py:mod:`base_preprocessing`
+============================
+
+.. py:module:: base_preprocessing
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   base_preprocessing.BasePreprocessor
+
+
+
+
+.. py:class:: BasePreprocessor
+
+   .. py:method:: preprocess_data(data: pandas.Series) -> pandas.Series
+      :abstractmethod:
+
+      Performs preprocessing of raw texts, returns cleaned texts
+
+      :param X: raw texts
+      :return: cleaned texts
+
+
+

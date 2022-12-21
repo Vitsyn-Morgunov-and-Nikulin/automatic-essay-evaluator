@@ -1,0 +1,51 @@
+:py:mod:`src.cross_validate`
+============================
+
+.. py:module:: src.cross_validate
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   src.cross_validate.CrossValidation
+
+
+
+
+.. py:class:: CrossValidation(saving_dir: str, n_splits: int = 5)
+
+   .. py:attribute:: device
+      
+
+      
+
+   .. py:method:: fit(model: src.solutions.base_solution.BaseSolution, X: pandas.DataFrame, y: pandas.DataFrame) -> pandas.DataFrame
+
+      Makes average fold prediction
+
+      :param model: predictor from BaseSolution class
+      :param X: Dataframe that has text_id and full_text columns
+      :param y: Dataframe that has text_id, cohesion, ... columns
+      :return: Dataframe with class scores for each split and overall CV score
+
+
+   .. py:method:: predict(X: pandas.DataFrame) -> pandas.DataFrame
+
+      Makes average fold prediction
+
+      :param X: Dataframe that have text_id and full_text columns
+      :return: prediction Dataframe that have text_id, cohesion, ... columns
+
+
+   .. py:method:: save(path: Union[str, pathlib.Path])
+
+
+   .. py:method:: load(path: Union[str, pathlib.Path], predictor: src.solutions.base_solution.BaseSolution)
+
+
+

@@ -1,0 +1,30 @@
+:py:mod:`train`
+===============
+
+.. py:module:: train
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   train.train
+   train.predict
+   train.main
+
+
+
+.. py:function:: train(config: dict, train_df: pandas.DataFrame, val_df: pandas.DataFrame, verbose: bool = False) -> src.model_finetuning.model.BertLightningModel
+
+
+.. py:function:: predict(config: dict, model: src.model_finetuning.model.BertLightningModel, df: pandas.DataFrame) -> pandas.DataFrame
+
+
+.. py:function:: main()
+
+

@@ -1,0 +1,22 @@
+:py:mod:`test_term_frequency_feature_extractor`
+===============================================
+
+.. py:module:: test_term_frequency_feature_extractor
+
+
+Module Contents
+---------------
+
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   test_term_frequency_feature_extractor.test_text_feature_generation
+
+
+
+.. py:function:: test_text_feature_generation()
+
+

@@ -1,0 +1,35 @@
+:py:mod:`spellcheck_preprocessing`
+==================================
+
+.. py:module:: spellcheck_preprocessing
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   spellcheck_preprocessing.SpellcheckTextPreprocessor
+
+
+
+
+.. py:class:: SpellcheckTextPreprocessor(spellcheck: src.spell_checker.SmartSpellChecker)
+
+   Bases: :py:obj:`src.text_preprocessings.base_preprocessing.BasePreprocessor`
+
+   .. py:method:: preprocess_data(data: pandas.Series) -> pandas.Series
+
+      Performs preprocessing of raw texts, returns cleaned texts
+
+      :param X: raw texts
+      :return: cleaned texts
+
+
+   .. py:method:: _preprocess_text(text: str) -> str
+
+
+
